@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/itemTrainingConstraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/itemTrainingEditAndDeleteLinearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="end"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/itemTrainingEditImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="14dp"
+            android:contentDescription="@string/item_training_content_description_edit"
+            android:src="@drawable/ic_edit"
+            app:tint="@color/gray_585">
+
+        </ImageView>
+
+        <ImageView
+            android:id="@+id/itemTrainingDeleteImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:contentDescription="@string/item_training_content_description_delete"
+            android:src="@drawable/ic_trash"
+            app:tint="@color/gray_585">
+
+        </ImageView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/itemTrainingNumberLinearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemTrainingEditAndDeleteLinearLayout">
+
+        <TextView
+            android:id="@+id/itemTrainingNumberTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/item_training_number"
+            android:textColor="@color/gray_585" />
+
+        <TextView
+            android:id="@+id/itemTrainingIdTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:textColor="@color/green_aab"
+            android:textStyle="bold"
+            tools:text="00000">
+
+        </TextView>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/itemTrainingDescriptionTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemTrainingNumberLinearLayout"
+        tools:text="Descrição do treino" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

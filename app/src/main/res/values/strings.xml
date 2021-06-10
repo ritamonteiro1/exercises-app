@@ -7,4 +7,9 @@
     <string name="login_button_sign_in">Entrar</string>
     <string name="fill_the_field">Preencha o campo</string>
     <string name="incorrect_email">Preencha o campo no formato de E-mail. Ex: abc@abc.com.br</string>
+    <string name="training_list">Treinos</string>
+    <string name="create_new_training">Criar novo treino</string>
+    <string name="item_training_number">Número do treino:</string>
+    <string name="item_training_content_description_delete">Clique aqui para apagar este treino</string>
+    <string name="item_training_content_description_edit">Clique aqui para editar a descrição deste treino</string>
 </resources>
