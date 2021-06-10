@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void moveToTrainingActivity() {
-        Intent intent = new Intent(this,TrainingActivity.class);
+        Intent intent = new Intent(this, TrainingListActivity.class);
         startActivity(intent);
     }
 
