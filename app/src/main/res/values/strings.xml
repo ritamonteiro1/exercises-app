@@ -12,4 +12,9 @@
     <string name="item_training_number">Número do treino:</string>
     <string name="item_training_content_description_delete">Clique aqui para apagar este treino</string>
     <string name="item_training_content_description_edit">Clique aqui para editar a descrição deste treino</string>
+    <string name="create_new_exercise_text_button">Criar novo exercício</string>
+    <string name="item_exercise_content_description">Imagem que corresponde ao tipo de exercício</string>
+    <string name="item_exercise_content_description_edit">Clique aqui para editar as observações do exercício</string>
+    <string name="item_exercise_content_description_delete">Clique aqui para deletar este exercício</string>
+    <string name="item_exercise_number">Número do exercício</string>
 </resources>

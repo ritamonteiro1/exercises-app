@@ -3,13 +3,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/trainingConstraintLayout"
+    android:id="@+id/trainingListConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.TrainingListActivity">
 
     <TextView
-        android:id="@+id/trainingTextView"
+        android:id="@+id/trainingListTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -26,23 +26,23 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/trainingRecyclerView"
+        android:id="@+id/trainingListRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/trainingButton"
+        app:layout_constraintBottom_toTopOf="@+id/trainingListButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/trainingTextView"
+        app:layout_constraintTop_toBottomOf="@+id/trainingListTextView"
         tools:itemCount="10"
         tools:listitem="@layout/item_training"/>
 
     <Button
-        android:id="@+id/trainingButton"
+        android:id="@+id/trainingListButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
