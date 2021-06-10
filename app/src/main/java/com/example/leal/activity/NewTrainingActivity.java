@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.example.leal.R;
 
-public class NewTraining extends AppCompatActivity {
+public class NewTrainingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

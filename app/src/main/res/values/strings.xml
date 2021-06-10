@@ -20,4 +20,7 @@
     <string name="cancel_text_button">Cancelar</string>
     <string name="save_text_button">Salvar</string>
     <string name="description_new_training_text_hint">Digite a descrição do novo treino</string>
+    <string name="exercise_type">Selecione o tipo de exercício</string>
+    <string name="content_description_image_new_exercise">Imagem correspondente ao novo exercício</string>
+    <string name="observation_text_hint">Observações</string>
 </resources>
