@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.leal.R;
+import com.example.leal.utils.Utils;
 import com.google.android.material.textfield.TextInputLayout;
 
 public class LoginActivity extends AppCompatActivity {
@@ -24,6 +25,11 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setupLoginButton() {
         loginButton.setOnClickListener(v -> {
+            boolean isValidEmail = Utils.isValidEmail(loginEmailEditText, loginEmailTextInputLayout,
+                    this);
+            boolean isEmptyPassword = Utils.isEmptyField(loginPasswordTextInputLayout,
+                    loginPasswordEditText, this);
+            if (!isValidEmail || isEmptyPassword) return;
 
         });
     }
