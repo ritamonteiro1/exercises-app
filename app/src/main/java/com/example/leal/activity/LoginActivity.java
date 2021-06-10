@@ -2,6 +2,7 @@ package com.example.leal.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,8 +31,13 @@ public class LoginActivity extends AppCompatActivity {
             boolean isEmptyPassword = Utils.isEmptyField(loginPasswordTextInputLayout,
                     loginPasswordEditText, this);
             if (!isValidEmail || isEmptyPassword) return;
-
+            moveToTrainingActivity();
         });
+    }
+
+    private void moveToTrainingActivity() {
+        Intent intent = new Intent(this,TrainingActivity.class);
+        startActivity(intent);
     }
 
     private void findViewsById() {
