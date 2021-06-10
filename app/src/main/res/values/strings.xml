@@ -5,4 +5,6 @@
     <string name="login_email_text_hint">Email</string>
     <string name="login_password_text_hint">Senha</string>
     <string name="login_button_sign_in">Entrar</string>
+    <string name="fill_the_field">Preencha o campo</string>
+    <string name="incorrect_email">Preencha o campo no formato de E-mail. Ex: abc@abc.com.br</string>
 </resources>
