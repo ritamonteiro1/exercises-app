@@ -17,4 +17,7 @@
     <string name="item_exercise_content_description_edit">Clique aqui para editar as observações do exercício</string>
     <string name="item_exercise_content_description_delete">Clique aqui para deletar este exercício</string>
     <string name="item_exercise_number">Número do exercício</string>
+    <string name="cancel_text_button">Cancelar</string>
+    <string name="save_text_button">Salvar</string>
+    <string name="description_new_training_text_hint">Digite a descrição do novo treino</string>
 </resources>
