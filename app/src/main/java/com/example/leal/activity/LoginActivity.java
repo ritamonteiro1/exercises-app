@@ -10,11 +10,16 @@ import android.widget.EditText;
 import com.example.leal.R;
 import com.example.leal.utils.Utils;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText loginEmailEditText, loginPasswordEditText;
     private TextInputLayout loginEmailTextInputLayout, loginPasswordTextInputLayout;
     private Button loginButton;
+    private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+    private FirebaseAuth user = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
