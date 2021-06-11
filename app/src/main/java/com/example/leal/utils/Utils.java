@@ -1,5 +1,6 @@
 package com.example.leal.utils;
 
+
 import android.content.Context;
 import android.widget.EditText;
 
@@ -12,8 +13,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import static android.util.Patterns.EMAIL_ADDRESS;
 
 public class Utils {
-    public static Context context;
-
     public static boolean isEmptyField(TextInputLayout textInputLayout, EditText editText,
                                        Context context) {
         String value = editText.getText().toString();
@@ -41,7 +40,7 @@ public class Utils {
         }
     }
 
-    public static void createErrorDialog(String message, String alertDialogText) {
+    public static void createErrorDialog(String message, String alertDialogText, Context context) {
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(context);
         builder.setMessage(message)

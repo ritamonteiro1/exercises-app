@@ -23,4 +23,8 @@
     <string name="exercise_type">Selecione o tipo de exercício</string>
     <string name="content_description_image_new_exercise">Imagem correspondente ao novo exercício</string>
     <string name="observation_text_hint">Observações</string>
+    <string name="unauthenticated_user">Usuário não autenticado</string>
+    <string name="ocurred_error">Ocorreu um erro. Tente novamente mais tarde</string>
+    <string name="connection_fail_error">Falha na conexão com a internet</string>
+    <string name="alert_dialog_positive_message_ok">OK</string>
 </resources>
