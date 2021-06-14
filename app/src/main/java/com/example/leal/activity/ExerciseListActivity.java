@@ -1,12 +1,13 @@
 package com.example.leal.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.view.MenuItem;
 import android.widget.Button;
 
 import com.example.leal.R;
@@ -23,6 +24,15 @@ public class ExerciseListActivity extends AppCompatActivity {
         findViewsById();
         setupExerciseListToolBar();
         setupExerciseListButton();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setupExerciseListButton() {

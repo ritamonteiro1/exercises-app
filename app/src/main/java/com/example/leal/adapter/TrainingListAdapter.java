@@ -1,6 +1,7 @@
 package com.example.leal.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.leal.R;
+import com.example.leal.activity.EditTrainingActivity;
+import com.example.leal.constants.Constants;
 import com.example.leal.domains.Training;
+import com.example.leal.utils.Utils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -54,10 +58,20 @@ public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListAdapte
             itemTrainingEditImageView = itemView.findViewById(R.id.itemTrainingEditImageView);
             itemTrainingDeleteImageView = itemView.findViewById(R.id.itemTrainingDeleteImageView);
             itemTrainingIdTextView = itemView.findViewById(R.id.itemTrainingIdTextView);
-            itemTrainingDescriptionTextView = itemView.findViewById(R.id.itemTrainingDescriptionTextView);
+            itemTrainingDescriptionTextView =
+                    itemView.findViewById(R.id.itemTrainingDescriptionTextView);
         }
 
         public void bind(Training training, Context context) {
+            itemTrainingIdTextView.setText(training.getId());
+            itemTrainingDescriptionTextView.setText(training.getDescription());
+            itemTrainingDeleteImageView.setOnClickListener(v -> Utils.createErrorDialogWithNegativeButton(context.getString(R.string.item_training_delete_message),
+                    context));
+            itemTrainingEditImageView.setOnClickListener(v -> {
+                Intent intent = new Intent(context, EditTrainingActivity.class);
+                intent.putExtra(Constants.TRAINING_DETAILS, training.getDescription());
+                context.startActivity(intent);
+            });
         }
     }
 }

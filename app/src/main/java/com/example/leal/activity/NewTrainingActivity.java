@@ -1,9 +1,11 @@
 package com.example.leal.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -23,6 +25,15 @@ public class NewTrainingActivity extends AppCompatActivity {
         setupNewTrainingToolBar();
         setupNewTrainingCancelButton();
         setupNewTrainingSaveButton();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setupNewTrainingToolBar() {

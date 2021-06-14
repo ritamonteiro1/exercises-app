@@ -30,5 +30,7 @@
     <string name="trainings">Treinos</string>
     <string name="positive_message_alert_dialog">Sim</string>
     <string name="negative_message_alert_dialog">Não</string>
-    <string name="message_alert_dialog">Deseja mesmo cancela?</string>
+    <string name="message_alert_dialog">Deseja mesmo cancelar?</string>
+    <string name="item_training_delete_message">Deseja mesmo apagar este treino?</string>
+    <string name="edit_description_text_hint">Edite a descrição do treino</string>
 </resources>

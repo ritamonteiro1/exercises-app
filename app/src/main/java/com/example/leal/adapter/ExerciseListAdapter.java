@@ -51,6 +51,7 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
         }
 
         public void bind(Exercise exercise, Context context) {
+
         }
     }
 }

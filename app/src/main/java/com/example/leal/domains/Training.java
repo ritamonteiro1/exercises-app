@@ -8,6 +8,12 @@ public class Training {
     private Long date;
     private List<Exercise> exerciseList;
 
+    public Training(int id, String description, Long date) {
+        this.id = id;
+        this.description = description;
+        this.date = date;
+    }
+
     public int getId() {
         return id;
     }

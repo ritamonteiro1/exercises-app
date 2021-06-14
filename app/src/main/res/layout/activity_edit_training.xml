@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/editTrainingActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.EditTrainingActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/editTrainingToolBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/orange_d39"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/AppTheme.Toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:navigationIcon="@drawable/ic_arrow_back" />
+
+
+    <EditText
+        android:id="@+id/newTrainingEditTextMultiLine"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="@color/white"
+        android:gravity="start|top"
+        android:hint="@string/edit_description_text_hint"
+        android:inputType="textMultiLine"
+        android:textColor="@color/gray_585"
+        android:textColorHint="@color/gray_585"
+        app:layout_constraintBottom_toTopOf="@+id/editTrainingLinearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTrainingToolBar"
+        tools:ignore="Autofill">
+
+    </EditText>
+
+    <LinearLayout
+        android:id="@+id/editTrainingLinearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/editTrainingCancelButton"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue_bf5"
+            android:text="@string/cancel_text_button"
+            android:textColor="@color/white"
+            tools:ignore="ButtonStyle">
+
+        </Button>
+
+        <Button
+            android:id="@+id/editTrainingSaveButton"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="60dp"
+            android:backgroundTint="@color/blue_bf5"
+            android:text="@string/save_text_button"
+            android:textColor="@color/white"
+            tools:ignore="ButtonStyle">
+
+        </Button>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.example.leal.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
@@ -16,25 +18,35 @@ import com.example.leal.R;
 
 import com.example.leal.adapter.TrainingListAdapter;
 
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.leal.domains.Training;
+import com.example.leal.firebase.TrainingListRepository;
+
+
+import java.util.List;
 
 
 public class TrainingListActivity extends AppCompatActivity {
     private RecyclerView trainingListRecyclerView;
     private Button trainingListButton;
     private Toolbar trainingListToolBar;
-    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_training_list);
-        db = FirebaseFirestore.getInstance();
         findViewsById();
-        getTrainingListFromFirebase();
+        retrieverTrainingListFromFirebase();
         setupTrainingListButton();
         setupTrainingListToolBar();
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void setupTrainingListToolBar() {
@@ -56,8 +68,10 @@ public class TrainingListActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void getTrainingListFromFirebase() {
-
+    private void retrieverTrainingListFromFirebase() {
+        List<Training> trainingList = TrainingListRepository.getTrainingListFromFirebase();
+        TrainingListAdapter trainingListAdapter = new TrainingListAdapter(trainingList, this);
+        setupRecyclerView(trainingListAdapter);
     }
 
     private void setupRecyclerView(TrainingListAdapter trainingListAdapter) {
@@ -65,7 +79,7 @@ public class TrainingListActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
         trainingListRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayout
-        .VERTICAL));
+                .VERTICAL));
         trainingListRecyclerView.setLayoutManager(layoutManager);
     }
 
