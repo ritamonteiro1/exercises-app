@@ -8,7 +8,6 @@
     <string name="fill_the_field">Preencha o campo</string>
     <string name="incorrect_email">Preencha o campo no formato de E-mail. Ex: abc@abc.com.br</string>
     <string name="training_list">Treinos</string>
-    <string name="create_new_training">Criar novo treino</string>
     <string name="item_training_number">Número do treino:</string>
     <string name="item_training_content_description_delete">Clique aqui para apagar este treino</string>
     <string name="item_training_content_description_edit">Clique aqui para editar a descrição deste treino</string>
@@ -27,10 +26,18 @@
     <string name="ocurred_error">Ocorreu um erro. Tente novamente mais tarde</string>
     <string name="connection_fail_error">Falha na conexão com a internet</string>
     <string name="alert_dialog_positive_message_ok">OK</string>
-    <string name="trainings">Treinos</string>
+    <string name="trainings">Lista de treinos</string>
     <string name="positive_message_alert_dialog">Sim</string>
     <string name="negative_message_alert_dialog">Não</string>
     <string name="message_alert_dialog">Deseja mesmo cancelar?</string>
     <string name="item_training_delete_message">Deseja mesmo apagar este treino?</string>
     <string name="edit_description_text_hint">Edite a descrição do treino</string>
+    <string name="edit_observation_exercise_text_hint">Edite as observações do exercício</string>
+    <string name="edit_description_exercise_text_hint">Edite as observações do exercício</string>
+    <string name="edit_exercise">Editar exercício</string>
+    <string name="edit_training">Editar treino</string>
+    <string name="exercise_list">Lista de exercícios</string>
+    <string name="create_new_exercise">Criar novo exercício</string>
+    <string name="create_new_training">Criar novo treino</string>
+    <string name="item_exercise_delete_message">Deseja mesmo apagar este exercício?</string>
 </resources>

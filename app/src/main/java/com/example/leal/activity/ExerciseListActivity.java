@@ -50,6 +50,7 @@ public class ExerciseListActivity extends AppCompatActivity {
         setSupportActionBar(exerciseListToolBar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(getString(R.string.exercise_list));
         }
     }
 

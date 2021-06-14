@@ -2,13 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/editTrainingActivity"
+    android:id="@+id/editExerciseConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.EditTrainingActivity">
+    tools:context=".activity.EditExerciseActivity">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/editTrainingToolBar"
+        android:id="@+id/editExerciseToolBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/orange_d39"
@@ -19,9 +19,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_arrow_back" />
 
-
     <EditText
-        android:id="@+id/editTrainingEditTextMultiLine"
+        android:id="@+id/editExerciseEditTextMultiLine"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="12dp"
@@ -30,20 +29,20 @@
         android:layout_marginBottom="20dp"
         android:backgroundTint="@color/white"
         android:gravity="start|top"
-        android:hint="@string/edit_description_text_hint"
+        android:hint="@string/edit_description_exercise_text_hint"
         android:inputType="textMultiLine"
         android:textColor="@color/gray_585"
         android:textColorHint="@color/gray_585"
-        app:layout_constraintBottom_toTopOf="@+id/editTrainingLinearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/editExerciseLinearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTrainingToolBar"
+        app:layout_constraintTop_toBottomOf="@+id/editExerciseToolBar"
         tools:ignore="Autofill">
 
     </EditText>
 
     <LinearLayout
-        android:id="@+id/editTrainingLinearLayout"
+        android:id="@+id/editExerciseLinearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
@@ -56,7 +55,7 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
-            android:id="@+id/editTrainingCancelButton"
+            android:id="@+id/editExerciseCancelButton"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/blue_bf5"
@@ -67,7 +66,7 @@
         </Button>
 
         <Button
-            android:id="@+id/editTrainingSaveButton"
+            android:id="@+id/editExerciseSaveButton"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="60dp"
@@ -78,5 +77,4 @@
 
         </Button>
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,4 +11,5 @@ public class Constants {
     public static final String DATE_FIELD_TRAINING_LIST = "date";
     public static final String EXERCISE_LIST_FIELD_TRAINING_LIST = "exerciselist";
     public static final String TRAINING_DETAILS = "training details";
+    public static final String EXERCISE_OBSERVATION = "exercise observation";
 }

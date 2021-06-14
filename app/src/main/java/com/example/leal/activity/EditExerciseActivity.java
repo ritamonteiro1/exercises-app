@@ -9,19 +9,19 @@ import android.view.MenuItem;
 
 import com.example.leal.R;
 
-public class EditTrainingActivity extends AppCompatActivity {
-    private Toolbar editTrainingToolBar;
+public class EditExerciseActivity extends AppCompatActivity {
+    private Toolbar editExerciseToolBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_training);
+        setContentView(R.layout.activity_edit_exercise);
         findViewsById();
-        setupEditTrainingToolBar();
+        setupEditExerciseToolBar();
     }
 
     private void findViewsById() {
-        editTrainingToolBar = findViewById(R.id.editTrainingToolBar);
+        editExerciseToolBar = findViewById(R.id.editExerciseToolBar);
     }
 
     @Override
@@ -33,11 +33,11 @@ public class EditTrainingActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupEditTrainingToolBar() {
-        setSupportActionBar(editTrainingToolBar);
+    private void setupEditExerciseToolBar() {
+        setSupportActionBar(editExerciseToolBar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(getString(R.string.edit_training));
+            getSupportActionBar().setTitle(getString(R.string.edit_exercise));
         }
     }
 }

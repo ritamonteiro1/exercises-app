@@ -57,9 +57,9 @@ public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListAdapte
             super(itemView);
             itemTrainingEditImageView = itemView.findViewById(R.id.itemTrainingEditImageView);
             itemTrainingDeleteImageView = itemView.findViewById(R.id.itemTrainingDeleteImageView);
-            itemTrainingIdTextView = itemView.findViewById(R.id.itemTrainingIdTextView);
+            itemTrainingIdTextView = itemView.findViewById(R.id.itemExerciseIdTextView);
             itemTrainingDescriptionTextView =
-                    itemView.findViewById(R.id.itemTrainingDescriptionTextView);
+                    itemView.findViewById(R.id.itemExerciseDescriptionTextView);
         }
 
         public void bind(Training training, Context context) {

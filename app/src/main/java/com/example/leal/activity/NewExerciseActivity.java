@@ -54,6 +54,7 @@ public class NewExerciseActivity extends AppCompatActivity {
         setSupportActionBar(newExerciseToolBar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(getString(R.string.create_new_exercise));
         }
     }
 

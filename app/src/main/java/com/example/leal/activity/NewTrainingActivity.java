@@ -40,6 +40,7 @@ public class NewTrainingActivity extends AppCompatActivity {
         setSupportActionBar(newTrainingToolBar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle(getString(R.string.create_new_training));
         }
     }
 
