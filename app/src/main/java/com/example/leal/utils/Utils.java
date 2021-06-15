@@ -55,8 +55,8 @@ public class Utils {
                 new AlertDialog.Builder(context);
         builder.setMessage(message)
                 .setCancelable(false)
-                .setPositiveButton((context.getString(R.string.positive_message_alert_dialog)),
-                        null).setNegativeButton(context.getString(R.string.negative_message_alert_dialog),null);
+                .setPositiveButton((context.getString(R.string.positive_message_alert_dialog)), null)
+                .setNegativeButton(context.getString(R.string.negative_message_alert_dialog), null);
         AlertDialog alert = builder.create();
         alert.show();
     }

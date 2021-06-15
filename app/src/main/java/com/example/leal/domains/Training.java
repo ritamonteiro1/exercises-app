@@ -1,20 +1,14 @@
 package com.example.leal.domains;
 
-import java.util.List;
+import com.google.firebase.Timestamp;
 
 public class Training {
-    private int id;
+    private String documentId;
+    private Long id;
     private String description;
-    private Long date;
-    private List<Exercise> exerciseList;
+    private Timestamp date;
 
-    public Training(int id, String description, Long date) {
-        this.id = id;
-        this.description = description;
-        this.date = date;
-    }
-
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -22,11 +16,15 @@ public class Training {
         return description;
     }
 
-    public Long getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public List<Exercise> getExerciseList() {
-        return exerciseList;
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
     }
 }

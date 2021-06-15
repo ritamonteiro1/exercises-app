@@ -1,5 +1,11 @@
 package com.example.leal.activity;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.LinearLayout;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -7,21 +13,14 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
-import android.os.Bundle;
-
-import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.LinearLayout;
-
 import com.example.leal.R;
-
 import com.example.leal.adapter.TrainingListAdapter;
-
+import com.example.leal.constants.Constants;
 import com.example.leal.domains.Training;
-import com.example.leal.firebase.TrainingListRepository;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -35,7 +34,7 @@ public class TrainingListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_training_list);
         findViewsById();
-        retrieverTrainingListFromFirebase();
+        getTrainingListFromFirebase();
         setupTrainingListButton();
         setupTrainingListToolBar();
     }
@@ -68,13 +67,28 @@ public class TrainingListActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void retrieverTrainingListFromFirebase() {
-        List<Training> trainingList = TrainingListRepository.getTrainingListFromFirebase();
-        TrainingListAdapter trainingListAdapter = new TrainingListAdapter(trainingList, this);
-        setupRecyclerView(trainingListAdapter);
+    public void getTrainingListFromFirebase() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection(Constants.USERS_COLLECTION_PATH)
+                .document(Constants.EMAIL_DOCUMENT_PATH)
+                .collection(Constants.TRAINING_LIST_COLLECTION_PATH)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        ArrayList<Training> trainingList = new ArrayList<>();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Training training = document.toObject(Training.class);
+                            training.setDocumentId(document.getId());
+                            trainingList.add(training);
+                        }
+                        setupRecyclerView(trainingList);
+                    }
+                });
     }
 
-    private void setupRecyclerView(TrainingListAdapter trainingListAdapter) {
+    private void setupRecyclerView(List<Training> trainingList) {
+        TrainingListAdapter trainingListAdapter = new TrainingListAdapter(trainingList, this);
+
         trainingListRecyclerView.setAdapter(trainingListAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);

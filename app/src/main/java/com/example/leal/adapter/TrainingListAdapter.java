@@ -63,7 +63,7 @@ public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListAdapte
         }
 
         public void bind(Training training, Context context) {
-            itemTrainingIdTextView.setText(training.getId());
+            itemTrainingIdTextView.setText(training.getId().toString());
             itemTrainingDescriptionTextView.setText(training.getDescription());
             itemTrainingDeleteImageView.setOnClickListener(v -> Utils.createErrorDialogWithNegativeButton(context.getString(R.string.item_training_delete_message),
                     context));
