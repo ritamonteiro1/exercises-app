@@ -42,7 +42,7 @@ public class NewExerciseActivity extends AppCompatActivity {
 
     private void setupNewExerciseCancelButton() {
         newExerciseCancelButton.setOnClickListener(v -> {
-            Utils.createErrorDialogWithNegativeButton(getString(R.string.message_alert_dialog),
+            Utils.createAlertDialogWithQuestion(getString(R.string.message_alert_dialog),
                     this);
         });
     }

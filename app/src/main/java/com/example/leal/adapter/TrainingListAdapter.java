@@ -13,9 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.leal.R;
 import com.example.leal.activity.EditTrainingActivity;
+import com.example.leal.click.listener.OnTrainingDeleteClickListener;
 import com.example.leal.constants.Constants;
 import com.example.leal.domains.Training;
-import com.example.leal.utils.Utils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -24,10 +24,13 @@ import java.util.List;
 public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListAdapter.TrainingListViewHolder> {
     private List<Training> trainingList;
     private Context context;
+    private OnTrainingDeleteClickListener onDeleteClickListener;
 
-    public TrainingListAdapter(List<Training> trainingList, Context context) {
+    public TrainingListAdapter(List<Training> trainingList, Context context,
+                               OnTrainingDeleteClickListener onDeleteClickListener) {
         this.trainingList = trainingList;
         this.context = context;
+        this.onDeleteClickListener = onDeleteClickListener;
     }
 
     @NonNull
@@ -35,13 +38,14 @@ public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListAdapte
     @Override
     public TrainingListAdapter.TrainingListViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View listItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_training,
-                parent, false);
+                parent, false
+        );
         return new TrainingListViewHolder(listItem);
     }
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull TrainingListAdapter.TrainingListViewHolder holder, int position) {
-        holder.bind(trainingList.get(position), context);
+        holder.bind(trainingList.get(position), context, onDeleteClickListener);
     }
 
     @Override
@@ -62,11 +66,13 @@ public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListAdapte
                     itemView.findViewById(R.id.itemExerciseDescriptionTextView);
         }
 
-        public void bind(Training training, Context context) {
+        public void bind(Training training, Context context,
+                         OnTrainingDeleteClickListener onDeleteClickListener) {
             itemTrainingIdTextView.setText(training.getId().toString());
             itemTrainingDescriptionTextView.setText(training.getDescription());
-            itemTrainingDeleteImageView.setOnClickListener(v -> Utils.createErrorDialogWithNegativeButton(context.getString(R.string.item_training_delete_message),
-                    context));
+            itemTrainingDeleteImageView.setOnClickListener(v ->
+                    onDeleteClickListener.onClick(training)
+            );
             itemTrainingEditImageView.setOnClickListener(v -> {
                 Intent intent = new Intent(context, EditTrainingActivity.class);
                 intent.putExtra(Constants.TRAINING_DETAILS, training.getDescription());

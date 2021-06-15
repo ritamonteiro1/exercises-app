@@ -70,7 +70,7 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
                 intent.putExtra(Constants.EXERCISE_OBSERVATION, exercise.getObservation());
                 context.startActivity(intent);
             });
-            itemExerciseDeleteImageView.setOnClickListener(v -> Utils.createErrorDialogWithNegativeButton(context.getString(R.string.item_exercise_delete_message), context));
+            //itemExerciseDeleteImageView.setOnClickListener(v -> Utils.createAlertDialogWithQuestion(context.getString(R.string.item_exercise_delete_message), context));
             itemExerciseDescriptionTextView.setText(exercise.getObservation());
             itemExerciseIdTextView.setText(exercise.getId());
         }

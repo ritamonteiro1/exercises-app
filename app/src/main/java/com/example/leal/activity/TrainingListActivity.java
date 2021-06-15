@@ -1,5 +1,6 @@
 package com.example.leal.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -17,6 +18,7 @@ import com.example.leal.R;
 import com.example.leal.adapter.TrainingListAdapter;
 import com.example.leal.constants.Constants;
 import com.example.leal.domains.Training;
+import com.example.leal.utils.Utils;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -87,11 +89,24 @@ public class TrainingListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(List<Training> trainingList) {
-        TrainingListAdapter trainingListAdapter = new TrainingListAdapter(trainingList, this);
+        TrainingListAdapter trainingListAdapter = new TrainingListAdapter(
+                trainingList,
+                this,
+                training -> Utils.createAlertDialogWithQuestion(
+                        getString(R.string.item_training_delete_message),
+                        this,
+                        (dialog, which) -> {
+
+//
+//                            training.getDocumentId()
+                        }
+                )
+        );
 
         trainingListRecyclerView.setAdapter(trainingListAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this,
-                LinearLayoutManager.VERTICAL, false);
+                LinearLayoutManager.VERTICAL, false
+        );
         trainingListRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayout
                 .VERTICAL));
         trainingListRecyclerView.setLayoutManager(layoutManager);

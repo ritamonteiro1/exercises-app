@@ -2,6 +2,7 @@ package com.example.leal.utils;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AlertDialog;
@@ -50,12 +51,14 @@ public class Utils {
         alert.show();
     }
 
-    public static void createErrorDialogWithNegativeButton(String message, Context context) {
+    public static void createAlertDialogWithQuestion(String message, Context context,
+                                                     DialogInterface.OnClickListener onPositiveClickListener) {
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(context);
         builder.setMessage(message)
                 .setCancelable(false)
-                .setPositiveButton((context.getString(R.string.positive_message_alert_dialog)), null)
+                .setPositiveButton((context.getString(R.string.positive_message_alert_dialog)),
+                        onPositiveClickListener)
                 .setNegativeButton(context.getString(R.string.negative_message_alert_dialog), null);
         AlertDialog alert = builder.create();
         alert.show();

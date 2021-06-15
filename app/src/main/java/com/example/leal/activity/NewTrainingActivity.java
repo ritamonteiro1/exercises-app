@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -46,8 +47,11 @@ public class NewTrainingActivity extends AppCompatActivity {
 
     private void setupNewTrainingCancelButton() {
         newTrainingCancelButton.setOnClickListener(v -> {
-            Utils.createErrorDialogWithNegativeButton(getString(R.string.message_alert_dialog),
-                    this);
+            Utils.createAlertDialogWithQuestion(
+                    getString(R.string.message_alert_dialog),
+                    this,
+                    (dialog, which) -> finish()
+            );
         });
     }
 
