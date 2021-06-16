@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.leal.R;
 import com.example.leal.activity.EditTrainingActivity;
+import com.example.leal.activity.ExerciseListActivity;
+import com.example.leal.click.listener.OnExerciseDeleteClickListener;
 import com.example.leal.constants.Constants;
 import com.example.leal.domains.Exercise;
 import com.example.leal.utils.Utils;
@@ -24,10 +26,13 @@ import java.util.List;
 public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapter.ExerciseListViewHolder> {
     private List<Exercise> exerciseList;
     private Context context;
+    private final OnExerciseDeleteClickListener onDeleteClickListener;
 
-    public ExerciseListAdapter(List<Exercise> exerciseList, Context context) {
+    public ExerciseListAdapter(List<Exercise> exerciseList, Context context,
+                               OnExerciseDeleteClickListener onDeleteClickListener) {
         this.exerciseList = exerciseList;
         this.context = context;
+        this.onDeleteClickListener = onDeleteClickListener;
     }
 
     @NonNull
@@ -35,13 +40,14 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
     @Override
     public ExerciseListAdapter.ExerciseListViewHolder onCreateViewHolder(@NonNull @org.jetbrains.annotations.NotNull ViewGroup parent, int viewType) {
         View listItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_exercise,
-                parent, false);
+                parent, false
+        );
         return new ExerciseListViewHolder(listItem);
     }
 
     @Override
     public void onBindViewHolder(@NonNull @org.jetbrains.annotations.NotNull ExerciseListAdapter.ExerciseListViewHolder holder, int position) {
-        holder.bind(exerciseList.get(position), context);
+        holder.bind(exerciseList.get(position), context, onDeleteClickListener);
     }
 
     @Override
@@ -59,20 +65,28 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
             itemExerciseImageView = itemView.findViewById(R.id.itemExerciseImageView);
             itemExerciseEditImageView = itemView.findViewById(R.id.itemExerciseEditImageView);
             itemExerciseDeleteImageView = itemView.findViewById(R.id.itemExerciseDeleteImageView);
-            itemExerciseIdTextView = itemView.findViewById(R.id.itemExerciseIdTextView);
+            itemExerciseIdTextView = itemView.findViewById(R.id.itemTrainingIdTextView);
             itemExerciseDescriptionTextView =
-                    itemView.findViewById(R.id.itemExerciseDescriptionTextView);
+                    itemView.findViewById(R.id.itemTrainingDescriptionTextView);
         }
 
-        public void bind(Exercise exercise, Context context) {
+        public void bind(Exercise exercise, Context context,
+                         OnExerciseDeleteClickListener onDeleteClickListener) {
             itemExerciseEditImageView.setOnClickListener(v -> {
                 Intent intent = new Intent(context, EditTrainingActivity.class);
-                intent.putExtra(Constants.EXERCISE_OBSERVATION, exercise.getObservation());
+                intent.putExtra(Constants.EXERCISE_OBSERVATION, exercise);
                 context.startActivity(intent);
             });
-            //itemExerciseDeleteImageView.setOnClickListener(v -> Utils.createAlertDialogWithQuestion(context.getString(R.string.item_exercise_delete_message), context));
+            itemExerciseDeleteImageView.setOnClickListener(v ->
+                    onDeleteClickListener.onClick(exercise)
+            );
             itemExerciseDescriptionTextView.setText(exercise.getObservation());
             itemExerciseIdTextView.setText(exercise.getId());
+            itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(context, ExerciseListActivity.class);
+                intent.putExtra(Constants.EXERCISE_DETAILS, String.valueOf(exercise.getId()));
+                context.startActivity(intent);
+            });
         }
     }
 }

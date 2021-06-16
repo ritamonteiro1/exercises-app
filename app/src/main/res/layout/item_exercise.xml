@@ -69,14 +69,14 @@
         app:layout_constraintTop_toBottomOf="@id/itemExerciseEditAndDeleteLinearLayout">
 
         <TextView
-            android:id="@+id/itemExerciseNumberTextView"
+            android:id="@+id/itemTrainingNumberTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/item_exercise_number"
             android:textColor="@color/gray_585" />
 
         <TextView
-            android:id="@+id/itemExerciseIdTextView"
+            android:id="@+id/itemTrainingIdTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -89,7 +89,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/itemExerciseDescriptionTextView"
+        android:id="@+id/itemTrainingDescriptionTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"

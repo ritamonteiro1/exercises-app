@@ -56,14 +56,14 @@
         app:layout_constraintTop_toBottomOf="@+id/itemTrainingEditAndDeleteLinearLayout">
 
         <TextView
-            android:id="@+id/itemExerciseNumberTextView"
+            android:id="@+id/itemTrainingNumberTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/item_training_number"
             android:textColor="@color/gray_585" />
 
         <TextView
-            android:id="@+id/itemExerciseIdTextView"
+            android:id="@+id/itemTrainingIdTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -75,18 +75,70 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/itemExerciseDescriptionTextView"
+    <LinearLayout
+        android:id="@+id/itemTrainingDateLinearLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/itemTrainingNumberLinearLayout">
+
+        <TextView
+            android:id="@+id/itemTrainingDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/item_training_registration_date"
+            android:textColor="@color/gray_585" />
+
+        <TextView
+            android:id="@+id/itemTrainingDateFormatTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:textColor="@color/green_aab"
+            android:textStyle="bold"
+            tools:text="00000">
+
+        </TextView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/itemTrainingDescriptionLinearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="6dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="6dp"
+        android:gravity="start"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/itemTrainingNumberLinearLayout"
-        tools:text="Descrição do treino" />
+        app:layout_constraintTop_toBottomOf="@+id/itemTrainingDateLinearLayout">
+
+        <TextView
+            android:id="@+id/itemTrainingTextDescriptionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/item_training_description"
+            android:textColor="@color/gray_585" />
+
+        <TextView
+            android:id="@+id/itemTrainingDescriptionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:textColor="@color/green_aab"
+            android:textStyle="bold"
+            tools:text="Descrição do treino">
+
+        </TextView>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

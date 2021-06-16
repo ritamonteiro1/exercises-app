@@ -36,8 +36,21 @@
     <string name="edit_description_exercise_text_hint">Edite as observações do exercício</string>
     <string name="edit_exercise">Editar exercício</string>
     <string name="edit_training">Editar treino</string>
-    <string name="exercise_list">Lista de exercícios</string>
+    <string name="exercise_list">Exercícios do treino:</string>
     <string name="create_new_exercise">Criar novo exercício</string>
     <string name="create_new_training">Criar novo treino</string>
     <string name="item_exercise_delete_message">Deseja mesmo apagar este exercício?</string>
+    <string name="deleted_training">Treino apagado!</string>
+    <string name="error_deleted_training">Erro ao apagar treino. Tente novamente</string>
+    <string name="error_connection_training_list">Falha na conexão. Tente novamente.</string>
+    <string name="error_training_list">"Ocorreu um erro. Tente novamente mais tarde."</string>
+    <string name="error_exercise_list">"Ocorreu um erro. Tente novamente mais tarde."</string>
+    <string name="item_training_registration_date">Data de cadastro:</string>
+    <string name="item_training_description">Descrição do treino:</string>
+    <string name="edited_description_training">Descrição editada!</string>
+    <string name="error_edited_description_training">Ocorreu um erro. Sua alteração não foi salva</string>
+    <string name="created_training">Treino criado!</string>
+    <string name="ocurred_error_exercise_list">Ocorreu um erro. Tente novamente.</string>
+    <string name="deleted_exercise">Exercício apagado!</string>
+    <string name="error_deleted_exercise">Ocorreu um erro. Tente novamente.</string>
 </resources>

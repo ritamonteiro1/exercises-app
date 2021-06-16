@@ -12,7 +12,8 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.example.leal.R;
-import com.example.leal.utils.Utils;
+import com.example.leal.constants.Constants;
+import com.example.leal.domains.User;
 
 public class NewExerciseActivity extends AppCompatActivity {
     private Toolbar newExerciseToolBar;
@@ -26,9 +27,14 @@ public class NewExerciseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_exercise);
         findViewsById();
+        User user = retrieverUserFromLoginActivity();
         setupNewExerciseToolBar();
         setupNewExerciseCancelButton();
-        setupNewExerciseSaveButton();
+        setupNewExerciseSaveButton(user);
+    }
+
+    private User retrieverUserFromLoginActivity() {
+        return (User) getIntent().getSerializableExtra(Constants.USER);
     }
 
     @Override
@@ -41,13 +47,13 @@ public class NewExerciseActivity extends AppCompatActivity {
     }
 
     private void setupNewExerciseCancelButton() {
-        newExerciseCancelButton.setOnClickListener(v -> {
-            Utils.createAlertDialogWithQuestion(getString(R.string.message_alert_dialog),
-                    this);
-        });
+//        newExerciseCancelButton.setOnClickListener(v -> {
+//            Utils.createAlertDialogWithQuestion(getString(R.string.message_alert_dialog),
+//                    this);
+//        });
     }
 
-    private void setupNewExerciseSaveButton() {
+    private void setupNewExerciseSaveButton(User user) {
     }
 
     private void setupNewExerciseToolBar() {

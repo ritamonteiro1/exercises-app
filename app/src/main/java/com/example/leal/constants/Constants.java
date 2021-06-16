@@ -12,4 +12,6 @@ public class Constants {
     public static final String EXERCISE_LIST_FIELD_TRAINING_LIST = "exerciselist";
     public static final String TRAINING_DETAILS = "training details";
     public static final String EXERCISE_OBSERVATION = "exercise observation";
+    public static final String USER = "user";
+    public static final String EXERCISE_DETAILS = "exercise details";
 }

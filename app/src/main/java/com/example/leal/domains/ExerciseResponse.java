@@ -5,6 +5,15 @@ public class ExerciseResponse {
     private String urlImage;
     private String observation;
     private String type;
+    private String documentId;
+
+    public String getDocumentId() {
+        return documentId;
+    }
+
+    public void setDocumentId(String documentId) {
+        this.documentId = documentId;
+    }
 
     public int getId() {
         return id;

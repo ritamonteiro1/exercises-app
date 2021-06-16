@@ -39,12 +39,16 @@ public class LoginActivity extends AppCompatActivity {
     private void setupLoginButton() {
         loginButton.setOnClickListener(v -> {
             boolean isValidEmail = Utils.isValidEmail(loginEmailEditText, loginEmailTextInputLayout,
-                    this);
+                    this
+            );
             boolean isEmptyPassword = Utils.isEmptyField(loginPasswordTextInputLayout,
-                    loginPasswordEditText, this);
+                    loginPasswordEditText, this
+            );
             if (!isValidEmail || isEmptyPassword) return;
-            User user = new User(loginEmailEditText.getText().toString(),
-                    loginPasswordEditText.getText().toString());
+            User user = new User(
+                    loginEmailEditText.getText().toString(),
+                    loginPasswordEditText.getText().toString()
+            );
             showProgressDialog();
             checkRegisteredUser(user);
         });
@@ -55,16 +59,18 @@ public class LoginActivity extends AppCompatActivity {
                 addOnCompleteListener(this, task -> {
                     loginProgressDialog.dismiss();
                     if (task.isSuccessful()) {
-                        moveToTrainingActivity();
+                        moveToTrainingActivity(user);
                     } else if (task.getException() instanceof FirebaseAuthInvalidUserException) {
                         loginEmailTextInputLayout.setError(getString(R.string.unauthenticated_user));
                         loginPasswordTextInputLayout.setError(Constants.BLANK_SPACE);
                     } else if (task.getException() instanceof FirebaseNetworkException) {
                         Utils.createErrorDialog(getString(R.string.connection_fail_error),
-                                getString(R.string.alert_dialog_positive_message_ok), this);
+                                getString(R.string.alert_dialog_positive_message_ok), this
+                        );
                     } else {
                         Utils.createErrorDialog(getString(R.string.ocurred_error),
-                                getString(R.string.alert_dialog_positive_message_ok), this);
+                                getString(R.string.alert_dialog_positive_message_ok), this
+                        );
                     }
                 });
     }
@@ -77,10 +83,41 @@ public class LoginActivity extends AppCompatActivity {
         loginProgressDialog.setCancelable(false);
     }
 
-    private void moveToTrainingActivity() {
+    private void moveToTrainingActivity(User user) {
+        sendUserToNewTrainingActivity(user);
+        sendUserToNewExerciseActivity(user);
+        sendUserToExerciseListActivity(user);
+        sendUserToEditTrainingActivity(user);
+        sendUserToEditExerciseActivity(user);
         Intent intent = new Intent(this, TrainingListActivity.class);
+        intent.putExtra(Constants.USER, user);
         startActivity(intent);
         finish();
+    }
+
+    private void sendUserToEditExerciseActivity(User user) {
+        Intent intent = new Intent(this, EditExerciseActivity.class);
+        intent.putExtra(Constants.USER, user);
+    }
+
+    private void sendUserToEditTrainingActivity(User user) {
+        Intent intent = new Intent(this, EditTrainingActivity.class);
+        intent.putExtra(Constants.USER, user);
+    }
+
+    private void sendUserToExerciseListActivity(User user) {
+        Intent intent = new Intent(this, ExerciseListActivity.class);
+        intent.putExtra(Constants.USER, user);
+    }
+
+    private void sendUserToNewExerciseActivity(User user) {
+        Intent intent = new Intent(this, NewExerciseActivity.class);
+        intent.putExtra(Constants.USER, user);
+    }
+
+    private void sendUserToNewTrainingActivity(User user) {
+        Intent intent = new Intent(this, NewTrainingActivity.class);
+        intent.putExtra(Constants.USER, user);
     }
 
     private void findViewsById() {

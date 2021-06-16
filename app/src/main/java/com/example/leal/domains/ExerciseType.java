@@ -1,6 +1,8 @@
 package com.example.leal.domains;
 
-public enum ExerciseType {
+import java.io.Serializable;
+
+public enum ExerciseType implements Serializable {
     AEROBIC("Aeróbico"), BODYBUILDING("Musculação"), INVALID("Inválido");
 
     private final String description;

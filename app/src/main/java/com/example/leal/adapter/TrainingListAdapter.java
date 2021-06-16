@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.leal.R;
 import com.example.leal.activity.EditTrainingActivity;
+import com.example.leal.activity.ExerciseListActivity;
 import com.example.leal.click.listener.OnTrainingDeleteClickListener;
 import com.example.leal.constants.Constants;
 import com.example.leal.domains.Training;
@@ -22,9 +23,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListAdapter.TrainingListViewHolder> {
-    private List<Training> trainingList;
-    private Context context;
-    private OnTrainingDeleteClickListener onDeleteClickListener;
+    private final List<Training> trainingList;
+    private final Context context;
+    private final OnTrainingDeleteClickListener onDeleteClickListener;
 
     public TrainingListAdapter(List<Training> trainingList, Context context,
                                OnTrainingDeleteClickListener onDeleteClickListener) {
@@ -54,30 +55,41 @@ public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListAdapte
     }
 
     public static class TrainingListViewHolder extends RecyclerView.ViewHolder {
-        private ImageView itemTrainingEditImageView, itemTrainingDeleteImageView;
-        private TextView itemTrainingIdTextView, itemTrainingDescriptionTextView;
+        private final ImageView itemTrainingEditImageView;
+        private final ImageView itemTrainingDeleteImageView;
+        private final TextView itemTrainingIdTextView;
+        private final TextView itemTrainingDescriptionTextView;
+        private final TextView itemTrainingDateFormatTextView;
 
         public TrainingListViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             itemTrainingEditImageView = itemView.findViewById(R.id.itemTrainingEditImageView);
             itemTrainingDeleteImageView = itemView.findViewById(R.id.itemTrainingDeleteImageView);
-            itemTrainingIdTextView = itemView.findViewById(R.id.itemExerciseIdTextView);
+            itemTrainingIdTextView = itemView.findViewById(R.id.itemTrainingIdTextView);
             itemTrainingDescriptionTextView =
-                    itemView.findViewById(R.id.itemExerciseDescriptionTextView);
+                    itemView.findViewById(R.id.itemTrainingDescriptionTextView);
+            itemTrainingDateFormatTextView =
+                    itemView.findViewById(R.id.itemTrainingDateFormatTextView);
         }
 
         public void bind(Training training, Context context,
                          OnTrainingDeleteClickListener onDeleteClickListener) {
-            itemTrainingIdTextView.setText(training.getId().toString());
+            itemTrainingIdTextView.setText(String.valueOf(training.getId()));
             itemTrainingDescriptionTextView.setText(training.getDescription());
             itemTrainingDeleteImageView.setOnClickListener(v ->
                     onDeleteClickListener.onClick(training)
             );
             itemTrainingEditImageView.setOnClickListener(v -> {
                 Intent intent = new Intent(context, EditTrainingActivity.class);
-                intent.putExtra(Constants.TRAINING_DETAILS, training.getDescription());
+                intent.putExtra(Constants.TRAINING_DETAILS, training.getDocumentId());
                 context.startActivity(intent);
             });
+            itemView.setOnClickListener(v -> {
+                Intent intent = new Intent(context, ExerciseListActivity.class);
+                intent.putExtra(Constants.TRAINING_DETAILS, String.valueOf(training.getId()));
+                context.startActivity(intent);
+            });
+            itemTrainingDateFormatTextView.setText(String.valueOf(training.getDate()));
         }
     }
 }
