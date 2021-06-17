@@ -2,18 +2,36 @@ package com.example.leal.domains;
 
 import java.io.Serializable;
 
-public class Exercise implements Serializable {
+public class ExerciseRequest implements Serializable {
     private int id;
     private String urlImage;
     private String observation;
     private ExerciseType type;
     private String documentId;
 
-    public Exercise(int id, String observation, ExerciseType type, String documentId) {
+    public ExerciseRequest(int id, String observation, ExerciseType type, String documentId,
+                           String urlImage) {
         this.id = id;
         this.observation = observation;
         this.type = type;
         this.documentId = documentId;
+        this.urlImage = urlImage;
+    }
+
+    public String getUrlImage() {
+        return urlImage;
+    }
+
+    public void setUrlImage(String urlImage) {
+        this.urlImage = urlImage;
+    }
+
+    public void setObservation(String observation) {
+        this.observation = observation;
+    }
+
+    public void setType(ExerciseType type) {
+        this.type = type;
     }
 
     public void setId(int id) {

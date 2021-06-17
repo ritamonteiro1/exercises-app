@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,24 +14,25 @@ import com.example.leal.R;
 import com.example.leal.click.listener.OnTrainingDeleteClickListener;
 import com.example.leal.click.listener.OnTrainingEditClickListener;
 import com.example.leal.click.listener.OnTrainingItemClickListener;
-import com.example.leal.domains.Training;
+import com.example.leal.domains.TrainingResponse;
+import com.example.leal.utils.Utils;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListAdapter.TrainingListViewHolder> {
-    private final List<Training> trainingList;
+    private final List<TrainingResponse> trainingResponseList;
     private final Context context;
     private final OnTrainingDeleteClickListener onDeleteClickListener;
     private final OnTrainingEditClickListener onEditClickListener;
     private final OnTrainingItemClickListener onItemClickListener;
 
-    public TrainingListAdapter(List<Training> trainingList, Context context,
+    public TrainingListAdapter(List<TrainingResponse> trainingResponseList, Context context,
                                OnTrainingDeleteClickListener onDeleteClickListener,
                                OnTrainingEditClickListener onEditClickListener,
                                OnTrainingItemClickListener onItemClickListener) {
-        this.trainingList = trainingList;
+        this.trainingResponseList = trainingResponseList;
         this.context = context;
         this.onDeleteClickListener = onDeleteClickListener;
         this.onEditClickListener = onEditClickListener;
@@ -50,27 +51,28 @@ public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListAdapte
     @Override
     public void onBindViewHolder(@NotNull TrainingListAdapter.TrainingListViewHolder holder,
                                  int position) {
-        holder.bind(trainingList.get(position), onDeleteClickListener,
+        holder.bind(
+                trainingResponseList.get(position), onDeleteClickListener,
                 onEditClickListener, onItemClickListener
         );
     }
 
     @Override
     public int getItemCount() {
-        return trainingList.size();
+        return trainingResponseList.size();
     }
 
     public static class TrainingListViewHolder extends RecyclerView.ViewHolder {
-        private final ImageView itemTrainingEditImageView;
-        private final ImageView itemTrainingDeleteImageView;
+        private final ImageButton itemTrainingEditImageButton;
+        private final ImageButton itemTrainingDeleteImageButton;
         private final TextView itemTrainingIdTextView;
         private final TextView itemTrainingDescriptionTextView;
         private final TextView itemTrainingDateFormatTextView;
 
         public TrainingListViewHolder(@NonNull View itemView) {
             super(itemView);
-            itemTrainingEditImageView = itemView.findViewById(R.id.itemTrainingEditImageView);
-            itemTrainingDeleteImageView = itemView.findViewById(R.id.itemTrainingDeleteImageView);
+            itemTrainingEditImageButton = itemView.findViewById(R.id.itemTrainingEditImageButton);
+            itemTrainingDeleteImageButton = itemView.findViewById(R.id.itemTrainingDeleteImageButton);
             itemTrainingIdTextView = itemView.findViewById(R.id.itemTrainingIdTextView);
             itemTrainingDescriptionTextView =
                     itemView.findViewById(R.id.itemTrainingDescriptionTextView);
@@ -78,16 +80,16 @@ public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListAdapte
                     itemView.findViewById(R.id.itemTrainingDateFormatTextView);
         }
 
-        public void bind(Training training,
+        public void bind(TrainingResponse trainingResponse,
                          OnTrainingDeleteClickListener onDeleteClickListener,
                          OnTrainingEditClickListener onEditClickListener,
                          OnTrainingItemClickListener onItemClickListener) {
-            itemTrainingIdTextView.setText(String.valueOf(training.getId()));
-            itemTrainingDescriptionTextView.setText(training.getDescription());
-            itemTrainingDeleteImageView.setOnClickListener(v -> onDeleteClickListener.onClick(training));
-            itemTrainingEditImageView.setOnClickListener(v -> onEditClickListener.onClick(training.getDocumentId()));
-            itemView.setOnClickListener(v -> onItemClickListener.onClick((String.valueOf(training.getId())), training.getDocumentId()));
-            itemTrainingDateFormatTextView.setText(String.valueOf(training.getDate()));
+            itemTrainingIdTextView.setText(String.valueOf(trainingResponse.getId()));
+            itemTrainingDescriptionTextView.setText(trainingResponse.getDescription());
+            itemTrainingDeleteImageButton.setOnClickListener(v -> onDeleteClickListener.onClick(trainingResponse));
+            itemTrainingEditImageButton.setOnClickListener(v -> onEditClickListener.onClick(trainingResponse.getDocumentId()));
+            itemView.setOnClickListener(v -> onItemClickListener.onClick((String.valueOf(trainingResponse.getId())), trainingResponse.getDocumentId()));
+           // itemTrainingDateFormatTextView.setText(Utils.convertTimestampToString(trainingResponse.getDate()));
         }
     }
 }

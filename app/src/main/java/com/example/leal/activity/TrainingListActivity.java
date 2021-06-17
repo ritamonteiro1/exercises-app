@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.leal.R;
 import com.example.leal.adapter.TrainingListAdapter;
 import com.example.leal.constants.Constants;
-import com.example.leal.domains.Training;
+import com.example.leal.domains.TrainingResponse;
 import com.example.leal.utils.Utils;
 
 import com.google.firebase.FirebaseNetworkException;
@@ -93,11 +93,15 @@ public class TrainingListActivity extends AppCompatActivity {
         db.collection(Constants.USERS_COLLECTION_PATH)
                 .document(loggedUserEmail)
                 .collection(Constants.TRAINING_LIST_COLLECTION_PATH)
+                .orderBy(Constants.TRAINING_TIMESTAMP)
                 .get()
                 .addOnCompleteListener(task -> {
                     loginProgressDialog.dismiss();
                     if (task.isSuccessful() && task.getResult() != null) {
                         successfullyGetTrainingListFromFirebase(loggedUserEmail, task);
+//                    } else if (task.getResult().isEmpty()){
+//                        trainingListTextView.setText(getString(R.string.training_list_empty));
+//                        trainingListTextView.setVisibility(View.VISIBLE);
                     } else if (task.getException() instanceof FirebaseNetworkException) {
                         trainingListTextView.setVisibility(View.VISIBLE);
                     } else {
@@ -110,19 +114,19 @@ public class TrainingListActivity extends AppCompatActivity {
     private void successfullyGetTrainingListFromFirebase(String loggedUserEmail,
                                                          com.google.android.gms.tasks.Task<com.google.firebase.firestore.QuerySnapshot> task) {
         trainingListRecyclerView.setVisibility(View.VISIBLE);
-        ArrayList<Training> trainingList = new ArrayList<>();
+        ArrayList<TrainingResponse> trainingResponseList = new ArrayList<>();
         if (task.getResult() != null)
             for (QueryDocumentSnapshot document : task.getResult()) {
-                Training training = document.toObject(Training.class);
-                training.setDocumentId(document.getId());
-                trainingList.add(training);
+                TrainingResponse trainingResponse = document.toObject(TrainingResponse.class);
+                trainingResponse.setDocumentId(document.getId());
+                trainingResponseList.add(trainingResponse);
             }
-        setupRecyclerView(trainingList, loggedUserEmail);
+        setupRecyclerView(trainingResponseList, loggedUserEmail);
     }
 
-    private void setupRecyclerView(List<Training> trainingList, String loggedUserEmail) {
+    private void setupRecyclerView(List<TrainingResponse> trainingResponseList, String loggedUserEmail) {
         TrainingListAdapter trainingListAdapter = new TrainingListAdapter(
-                trainingList,
+                trainingResponseList,
                 this,
                 training -> Utils.createAlertDialogWithQuestion(
                         getString(R.string.training_list_delete_question_training),
@@ -143,12 +147,12 @@ public class TrainingListActivity extends AppCompatActivity {
         setupAdapter(trainingListAdapter);
     }
 
-    private void deleteTraining(String loggedUserEmail, Training training) {
+    private void deleteTraining(String loggedUserEmail, TrainingResponse trainingResponse) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(Constants.USERS_COLLECTION_PATH)
                 .document(loggedUserEmail)
                 .collection(Constants.TRAINING_LIST_COLLECTION_PATH)
-                .document(training.getDocumentId())
+                .document(trainingResponse.getDocumentId())
                 .delete()
                 .addOnSuccessListener(
                         unused -> {

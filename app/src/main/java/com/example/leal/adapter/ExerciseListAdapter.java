@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,22 +14,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.leal.R;
 import com.example.leal.click.listener.OnExerciseDeleteClickListener;
 import com.example.leal.click.listener.OnExerciseEditClickListener;
-import com.example.leal.domains.Exercise;
+import com.example.leal.domains.ExerciseRequest;
+import com.example.leal.domains.ExerciseType;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapter.ExerciseListViewHolder> {
-    private final List<Exercise> exerciseList;
+    private final List<ExerciseRequest> exerciseRequestList;
     private final Context context;
     private final OnExerciseDeleteClickListener onDeleteClickListener;
     private final OnExerciseEditClickListener onEditClickListener;
 
-    public ExerciseListAdapter(List<Exercise> exerciseList, Context context,
+    public ExerciseListAdapter(List<ExerciseRequest> exerciseRequestList, Context context,
                                OnExerciseDeleteClickListener onDeleteClickListener,
                                OnExerciseEditClickListener onEditClickListener) {
-        this.exerciseList = exerciseList;
+        this.exerciseRequestList = exerciseRequestList;
         this.context = context;
         this.onDeleteClickListener = onDeleteClickListener;
         this.onEditClickListener = onEditClickListener;
@@ -46,40 +48,44 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull @org.jetbrains.annotations.NotNull ExerciseListAdapter.ExerciseListViewHolder holder, int position) {
-        holder.bind(exerciseList.get(position), onDeleteClickListener,
+        holder.bind(
+                exerciseRequestList.get(position), onDeleteClickListener,
                 onEditClickListener
         );
     }
 
     @Override
     public int getItemCount() {
-        return exerciseList.size();
+        return exerciseRequestList.size();
     }
 
     public static class ExerciseListViewHolder extends RecyclerView.ViewHolder {
         private final ImageView itemExerciseImageView;
-        private final ImageView itemExerciseEditImageView;
-        private final ImageView itemExerciseDeleteImageView;
+        private final ImageButton itemExerciseEditImageButton;
+        private final ImageButton itemExerciseDeleteImageButton;
         private final TextView itemExerciseIdTextView;
         private final TextView itemExerciseDescriptionTextView;
+        private final TextView itemExerciseTypeTextView;
 
         public ExerciseListViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             itemExerciseImageView = itemView.findViewById(R.id.itemExerciseImageView);
-            itemExerciseEditImageView = itemView.findViewById(R.id.itemExerciseEditImageView);
-            itemExerciseDeleteImageView = itemView.findViewById(R.id.itemExerciseDeleteImageView);
-            itemExerciseIdTextView = itemView.findViewById(R.id.itemTrainingIdTextView);
+            itemExerciseEditImageButton = itemView.findViewById(R.id.itemExerciseEditImageButton);
+            itemExerciseDeleteImageButton = itemView.findViewById(R.id.itemExerciseDeleteImageButton);
+            itemExerciseIdTextView = itemView.findViewById(R.id.itemExerciseIdTextView);
             itemExerciseDescriptionTextView =
-                    itemView.findViewById(R.id.itemTrainingDescriptionTextView);
+                    itemView.findViewById(R.id.itemExerciseDescriptionTextView);
+            itemExerciseTypeTextView = itemView.findViewById(R.id.itemExerciseTypeTextView);
         }
 
-        public void bind(Exercise exercise,
+        public void bind(ExerciseRequest exerciseRequest,
                          OnExerciseDeleteClickListener onDeleteClickListener,
                          OnExerciseEditClickListener onEditClickListener) {
-            itemExerciseEditImageView.setOnClickListener(v -> onEditClickListener.onClick(exercise.getDocumentId()));
-            itemExerciseDeleteImageView.setOnClickListener(v -> onDeleteClickListener.onClick(exercise));
-            itemExerciseDescriptionTextView.setText(exercise.getObservation());
-            itemExerciseIdTextView.setText(String.valueOf(exercise.getId()));
+            itemExerciseEditImageButton.setOnClickListener(v -> onEditClickListener.onClick(exerciseRequest.getDocumentId()));
+            itemExerciseDeleteImageButton.setOnClickListener(v -> onDeleteClickListener.onClick(exerciseRequest));
+            itemExerciseDescriptionTextView.setText(exerciseRequest.getObservation());
+            itemExerciseIdTextView.setText(String.valueOf(exerciseRequest.getId()));
+            itemExerciseTypeTextView.setText(ExerciseType.toStringExerciseType(exerciseRequest.getType()));
         }
     }
 }

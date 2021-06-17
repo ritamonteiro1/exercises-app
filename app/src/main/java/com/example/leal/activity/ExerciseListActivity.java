@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.example.leal.R;
 import com.example.leal.adapter.ExerciseListAdapter;
 import com.example.leal.constants.Constants;
-import com.example.leal.domains.Exercise;
+import com.example.leal.domains.ExerciseRequest;
 import com.example.leal.domains.ExerciseResponse;
 import com.example.leal.domains.ExerciseType;
 import com.example.leal.utils.Utils;
@@ -38,7 +38,7 @@ public class ExerciseListActivity extends AppCompatActivity {
     private Button exerciseListButton;
     private ProgressDialog loginProgressDialog;
     private TextView exerciseListTextView, exerciseListIdNumberTextView,
-            exerciseListIdTitleTextView;
+            exerciseListIdTitleTextView, exerciseListEmptyTextView;
     private String loggedUserEmail, trainingNumberId, trainingDocumentId;
 
     @Override
@@ -50,18 +50,18 @@ public class ExerciseListActivity extends AppCompatActivity {
         trainingNumberId = retrieverTrainingNumberIdFromTrainingListActivity();
         trainingDocumentId = retrieverTrainingDocumentIdFromTrainingListActivity();
         setupExerciseListToolBar();
-        setupExerciseListButton(loggedUserEmail);
+        setupExerciseListButton(loggedUserEmail, trainingDocumentId);
         showProgressDialog();
-    }
-
-    private String retrieverTrainingDocumentIdFromTrainingListActivity() {
-        return getIntent().getStringExtra(Constants.TRAINING_NUMBER_ID);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         getExerciseListFromFirebase(loggedUserEmail, trainingNumberId, trainingDocumentId);
+    }
+
+    private String retrieverTrainingDocumentIdFromTrainingListActivity() {
+        return getIntent().getStringExtra(Constants.TRAINING_DOCUMENT_ID);
     }
 
     private void getExerciseListFromFirebase(String loggedUserEmail, String trainingNumberId,
@@ -80,24 +80,25 @@ public class ExerciseListActivity extends AppCompatActivity {
                         exerciseListIdNumberTextView.setVisibility(View.VISIBLE);
                         exerciseListIdTitleTextView.setVisibility(View.VISIBLE);
                         exerciseListRecyclerView.setVisibility(View.VISIBLE);
-                        //ArrayList<ExerciseResponse> exerciseListResponse = new ArrayList<>();
-                        Exercise exercise;
-                        ArrayList<Exercise> exerciseList = new ArrayList<>();
+                        ExerciseRequest exerciseRequest;
+                        ArrayList<ExerciseRequest> exerciseRequestList = new ArrayList<>();
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             ExerciseResponse exerciseResponse =
                                     document.toObject(ExerciseResponse.class);
                             exerciseResponse.setDocumentId(document.getId());
-                            // exerciseListResponse.add(exerciseResponse);
-                            exercise = new Exercise(
+                            exerciseRequest = new ExerciseRequest(
                                     exerciseResponse.getId(),
                                     exerciseResponse.getObservation(),
                                     ExerciseType.toExerciseType(exerciseResponse.getType()),
-                                    exerciseResponse.getDocumentId()
+                                    exerciseResponse.getDocumentId(),
+                                    exerciseResponse.getUrlImage()
                             );
-                            exerciseList.add(exercise);
+                            exerciseRequestList.add(exerciseRequest);
                         }
-                        setupRecyclerView(exerciseList, loggedUserEmail, trainingDocumentId);
-                    } else if (task.getException() instanceof FirebaseNetworkException) {
+                        setupRecyclerView(exerciseRequestList, loggedUserEmail, trainingDocumentId);
+//                    } else if (task.getResult().isEmpty()) {
+//                        exerciseListEmptyTextView.setVisibility(View.VISIBLE);
+                    }else if (task.getException() instanceof FirebaseNetworkException) {
                         exerciseListTextView.setVisibility(View.VISIBLE);
                     } else {
                         exerciseListTextView.setText(getString(R.string.generic_error_try_again));
@@ -106,17 +107,18 @@ public class ExerciseListActivity extends AppCompatActivity {
                 });
     }
 
-    private void setupRecyclerView(ArrayList<Exercise> exerciseList, String loggedUserEmail,
+    private void setupRecyclerView(ArrayList<ExerciseRequest> exerciseRequestList, String loggedUserEmail,
                                    String trainingDocumentId) {
-        ExerciseListAdapter exerciseListAdapter = new ExerciseListAdapter(exerciseList, this,
-                exercise -> Utils.createAlertDialogWithQuestion(getString(R.string.exercise_list_delete_question_exercise),
-                        this, (dialog, which) -> deleteExercise(loggedUserEmail, exercise,
+        ExerciseListAdapter exerciseListAdapter = new ExerciseListAdapter(exerciseRequestList, this,
+                exerciseRequest -> Utils.createAlertDialogWithQuestion(getString(R.string.exercise_list_delete_question_exercise),
+                        this, (dialog, which) -> deleteExercise(loggedUserEmail, exerciseRequest,
                                 trainingDocumentId
                         )
                 ), exerciseDocumentId -> {
-            Intent intent = new Intent(ExerciseListActivity.this, EditTrainingActivity.class);
+            Intent intent = new Intent(ExerciseListActivity.this, EditExerciseActivity.class);
             intent.putExtra(Constants.EXERCISE_DOCUMENT_ID, exerciseDocumentId);
             intent.putExtra(Constants.LOGGED_USER_EMAIL, loggedUserEmail);
+            intent.putExtra(Constants.TRAINING_DOCUMENT_ID, trainingDocumentId);
             startActivity(intent);
         }
         );
@@ -133,7 +135,7 @@ public class ExerciseListActivity extends AppCompatActivity {
         exerciseListRecyclerView.setLayoutManager(layoutManager);
     }
 
-    private void deleteExercise(String loggedUserEmail, Exercise exercise,
+    private void deleteExercise(String loggedUserEmail, ExerciseRequest exerciseRequest,
                                 String trainingDocumentId) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(Constants.USERS_COLLECTION_PATH)
@@ -141,7 +143,7 @@ public class ExerciseListActivity extends AppCompatActivity {
                 .collection(Constants.TRAINING_LIST_COLLECTION_PATH)
                 .document(trainingDocumentId)
                 .collection(Constants.EXERCISE_LIST_FIELD_TRAINING_LIST)
-                .document(exercise.getDocumentId())
+                .document(exerciseRequest.getDocumentId())
                 .delete()
                 .addOnSuccessListener(unused -> Toast.makeText(
                         ExerciseListActivity.this,
@@ -178,13 +180,14 @@ public class ExerciseListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupExerciseListButton(String loggedUserEmail) {
-        exerciseListButton.setOnClickListener(v -> moveToNewExerciseActivity(loggedUserEmail));
+    private void setupExerciseListButton(String loggedUserEmail, String trainingDocumentId) {
+        exerciseListButton.setOnClickListener(v -> moveToNewExerciseActivity(loggedUserEmail, trainingDocumentId));
     }
 
-    private void moveToNewExerciseActivity(String loggedUserEmail) {
+    private void moveToNewExerciseActivity(String loggedUserEmail, String trainingDocumentId) {
         Intent intent = new Intent(this, NewExerciseActivity.class);
         intent.putExtra(Constants.LOGGED_USER_EMAIL, loggedUserEmail);
+        intent.putExtra(Constants.TRAINING_DOCUMENT_ID, trainingDocumentId);
         startActivity(intent);
     }
 
@@ -203,5 +206,6 @@ public class ExerciseListActivity extends AppCompatActivity {
         exerciseListTextView = findViewById(R.id.exerciseListTextView);
         exerciseListIdNumberTextView = findViewById(R.id.exerciseListIdNumberTextView);
         exerciseListIdTitleTextView = findViewById(R.id.exerciseListIdTitleTextView);
+        exerciseListEmptyTextView = findViewById(R.id.exerciseListEmptyTextView);
     }
 }

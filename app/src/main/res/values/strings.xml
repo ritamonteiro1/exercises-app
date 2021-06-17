@@ -19,6 +19,7 @@
     <string name="training_list_error_deleted_training">Error ao apagar treino. Tente novamente</string>
     <string name="training_list_successfully_deleted_training">Treino apagado</string>
     <string name="training_list_delete_question_training">Deseja mesmo apagar este treino?</string>
+    <string name="training_list_empty">A lista de treinos está vazia. Clique no botão abaixo para criar</string>
     <!-- NewTrainingActivity -->
     <string name="new_training_tool_bar_title">Criar novo treino</string>
     <string name="new_training_message_cancel_create_alert_dialog">Deseja mesmo cancelar a criação do treino?</string>
@@ -26,7 +27,7 @@
     <string name="new_training_error_fill_the_field">Preencha a descrição do novo treino</string>
     <!-- EditTrainingActivity -->
     <string name="edit_training_tool_bar_title">Editar treino</string>
-    <string name="edit_training_successfull_change_description_training">Alteração salva com sucesso</string>
+    <string name="edit_training_successfull_change_description_training">Alteração na descrição salva com sucesso</string>
     <string name="edit_training_error_fill_the_field">Preencha a descrição do treino</string>
     <string name="edit_training_message_cancel_edit_alert_dialog">Deseja mesmo cancelar a edição do treino?</string>
     <!--     ExerciseListActivity -->
@@ -36,6 +37,8 @@
     <!--     EditExerciseActivity -->
     <string name="edit_exercise_tool_bar_title">Editar exercício</string>
     <string name="edit_exercise_message_cancel_edit_alert_dialog">Deseja mesmo cancelar a edição do exercício?</string>
+    <string name="edit_exercise_error_fill_the_field">Preencha a observação do exercício</string>
+    <string name="edit_exercise_successfull_change_description_training">Alteração na observação salva com sucesso</string>
     <!--     NewExerciseActivity -->
     <string name="new_exercise_tool_bar_title">Criar novo exercício</string>
     <string name="new_exercise_message_cancel_create_alert_dialog">Deseja mesmo cancelar a criação do exercício?</string>
@@ -50,9 +53,11 @@
     <string name="item_exercise_content_description_edit">Clique aqui para editar as observações do exercício</string>
     <string name="item_exercise_content_description_delete">Clique aqui para deletar este exercício</string>
     <string name="item_exercise_number">Número do exercício</string>
+    <string name="item_exercise_type">Tipo:</string>
     <!--     activity_exercise_list.xml -->
     <string name="create_new_exercise_text_button">Criar novo exercício</string>
     <string name="exercise_list_training">Treino:</string>
+    <string name="exercise_list_empty">Não existem exercícios para este treino. Clique no botão abaixo para criar um</string>
     <!--     button generic text -->
     <string name="cancel_text_button">Cancelar</string>
     <string name="save_text_button">Salvar</string>

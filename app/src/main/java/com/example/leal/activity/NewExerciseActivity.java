@@ -28,9 +28,18 @@ public class NewExerciseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_exercise);
         findViewsById();
         String loggedUserEmail = retrieverLoggedUserEmailFromExerciseListActivity();
+        String trainingDocumentId = retrieverTrainingDocumentIdFromExerciseListActivity();
+        String aerobicTrainingTypeImageUrl = Constants.AEROBIC_PHOTO_URL_FROM_STORAGE;
+        String bodybuildingTrainingTypeImageUrl = Constants.BODYBUILDING_PHOTO_URL_FROM_STORAGE;
         setupNewExerciseToolBar();
         setupNewExerciseCancelButton();
-        setupNewExerciseSaveButton(loggedUserEmail);
+        setupNewExerciseSaveButton(loggedUserEmail, trainingDocumentId,
+                aerobicTrainingTypeImageUrl, bodybuildingTrainingTypeImageUrl
+        );
+    }
+
+    private String retrieverTrainingDocumentIdFromExerciseListActivity() {
+        return getIntent().getStringExtra(Constants.TRAINING_DOCUMENT_ID);
     }
 
     private String retrieverLoggedUserEmailFromExerciseListActivity() {
@@ -54,7 +63,12 @@ public class NewExerciseActivity extends AppCompatActivity {
         });
     }
 
-    private void setupNewExerciseSaveButton(String loggedUserEmail) {
+    private void setupNewExerciseSaveButton(String loggedUserEmail, String trainingDocumentId,
+                                            String aerobicTrainingTypeImageUrl,
+                                            String bodybuildingTrainingTypeImageUrl) {
+        newExerciseSaveButton.setOnClickListener(v -> {
+
+        });
     }
 
     private void setupNewExerciseToolBar() {

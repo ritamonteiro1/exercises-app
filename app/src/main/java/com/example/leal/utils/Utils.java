@@ -10,6 +10,12 @@ import androidx.appcompat.app.AlertDialog;
 import com.example.leal.R;
 import com.example.leal.constants.Constants;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.Timestamp;
+
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static android.util.Patterns.EMAIL_ADDRESS;
 
@@ -57,10 +63,18 @@ public class Utils {
                 new AlertDialog.Builder(context);
         builder.setMessage(message)
                 .setCancelable(false)
-                .setPositiveButton((context.getString(R.string.positive_message_alert_dialog)),
-                        onPositiveClickListener)
+                .setPositiveButton(
+                        (context.getString(R.string.positive_message_alert_dialog)),
+                        onPositiveClickListener
+                )
                 .setNegativeButton(context.getString(R.string.negative_message_alert_dialog), null);
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    public static String convertTimestampToString(Timestamp timestamp) {
+        Date date = new Date(timestamp.toDate().getTime());
+        DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_FORMAT, Constants.LOCALE_BR);
+        return dateFormat.format(date);
     }
 }

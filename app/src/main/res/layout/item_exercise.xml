@@ -32,27 +32,31 @@
         app:layout_constraintStart_toEndOf="@+id/itemExerciseImageView"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/itemExerciseEditImageView"
+        <ImageButton
+            android:id="@+id/itemExerciseEditImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="14dp"
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/item_exercise_content_description_edit"
             android:src="@drawable/ic_edit"
             app:tint="@color/gray_585">
 
-        </ImageView>
+        </ImageButton>
 
-        <ImageView
-            android:id="@+id/itemExerciseDeleteImageView"
+        <ImageButton
+            android:id="@+id/itemExerciseDeleteImageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/item_exercise_content_description_delete"
             android:src="@drawable/ic_trash"
             app:tint="@color/gray_585">
 
-        </ImageView>
+        </ImageButton>
 
     </LinearLayout>
 
@@ -69,14 +73,14 @@
         app:layout_constraintTop_toBottomOf="@id/itemExerciseEditAndDeleteLinearLayout">
 
         <TextView
-            android:id="@+id/itemTrainingNumberTextView"
+            android:id="@+id/itemExerciseNumberTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/item_exercise_number"
             android:textColor="@color/gray_585" />
 
         <TextView
-            android:id="@+id/itemTrainingIdTextView"
+            android:id="@+id/itemExerciseIdTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
@@ -88,15 +92,49 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/itemTrainingDescriptionTextView"
+    <LinearLayout
+        android:id="@+id/itemExerciseTypeLinearLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
+        android:gravity="start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/itemExerciseImageView"
+        app:layout_constraintTop_toBottomOf="@id/itemExerciseNumberLinearLayout">
+
+        <TextView
+            android:id="@+id/itemExerciseTypeTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/item_exercise_type"
+            android:textColor="@color/gray_585" />
+
+        <TextView
+            android:id="@+id/itemExerciseTypeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:textColor="@color/green_aab"
+            android:textStyle="bold"
+            tools:text="Tipo de exercício">
+
+        </TextView>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/itemExerciseDescriptionTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/itemExerciseImageView"
-        app:layout_constraintTop_toBottomOf="@+id/itemExerciseNumberLinearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/itemExerciseTypeLinearLayout"
         tools:text="Observações do exercício" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,16 +5,16 @@ import com.google.firebase.Timestamp;
 
 import java.io.Serializable;
 
-public class Training implements Serializable {
+public class TrainingResponse implements Serializable {
     private String documentId;
     private Long id;
     private String description;
     private Timestamp date;
 
-    public Training() {
+    public TrainingResponse() {
     }
 
-    public Training(Long id, String description, Timestamp date) {
+    public TrainingResponse(Long id, String description, Timestamp date) {
         this.documentId = documentId;
         this.id = id;
         this.description = description;
@@ -23,14 +23,6 @@ public class Training implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setDate(Timestamp date) {
-        this.date = date;
     }
 
     public void setDocumentId(String documentId) {

@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.example.leal.R;
 import com.example.leal.constants.Constants;
-import com.example.leal.domains.Training;
+import com.example.leal.domains.TrainingResponse;
 import com.example.leal.utils.Utils;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -68,30 +68,33 @@ public class NewTrainingActivity extends AppCompatActivity {
     private void setupNewTrainingSaveButton(String loggedUserEmail) {
         newTrainingSaveButton.setOnClickListener(v -> {
             String trainingDescription = newTrainingEditTextMultiLine.getText().toString();
-            if(trainingDescription.isEmpty()){
+            if (trainingDescription.isEmpty()) {
                 Toast.makeText(
                         NewTrainingActivity.this,
                         getString(R.string.new_training_error_fill_the_field),
                         Toast.LENGTH_LONG
                 ).show();
             } else {
-            Long id = System.currentTimeMillis();
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            Training training = new Training(id, trainingDescription, new Timestamp(new Date()));
-            db.collection(Constants.USERS_COLLECTION_PATH)
-                    .document(loggedUserEmail)
-                    .collection(Constants.TRAINING_LIST_COLLECTION_PATH)
-                    .add(training)
-                    .addOnSuccessListener(documentReference -> Toast.makeText(this,
-                            getString(R.string.new_training_successfully_create_training), Toast.LENGTH_LONG
-                    ).show())
-                    .addOnFailureListener(e -> Toast.makeText(
-                            this,
-                            getString(R.string.generic_error_try_again),
-                            Toast.LENGTH_LONG
-                    ).show());
-            finish();
-        }});
+                Long id = System.currentTimeMillis();
+                FirebaseFirestore db = FirebaseFirestore.getInstance();
+                TrainingResponse trainingResponse = new TrainingResponse(id, trainingDescription,
+                        new Timestamp(new Date()));
+                db.collection(Constants.USERS_COLLECTION_PATH)
+                        .document(loggedUserEmail)
+                        .collection(Constants.TRAINING_LIST_COLLECTION_PATH)
+                        .add(trainingResponse)
+                        .addOnSuccessListener(documentReference -> Toast.makeText(this,
+                                getString(R.string.new_training_successfully_create_training),
+                                Toast.LENGTH_LONG
+                        ).show())
+                        .addOnFailureListener(e -> Toast.makeText(
+                                this,
+                                getString(R.string.generic_error_try_again),
+                                Toast.LENGTH_LONG
+                        ).show());
+                finish();
+            }
+        });
     }
 
     private void findViewsById() {

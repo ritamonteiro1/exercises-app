@@ -71,7 +71,8 @@ public class EditTrainingActivity extends AppCompatActivity {
                                 Toast.LENGTH_LONG
                         ).show());
                 finish();
-            }});
+            }
+        });
     }
 
     private String retrieverTrainingDocumentIdFromTrainingListActivity() {
