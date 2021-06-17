@@ -13,7 +13,7 @@ import android.widget.Spinner;
 
 import com.example.leal.R;
 import com.example.leal.constants.Constants;
-import com.example.leal.domains.User;
+import com.example.leal.utils.Utils;
 
 public class NewExerciseActivity extends AppCompatActivity {
     private Toolbar newExerciseToolBar;
@@ -27,14 +27,14 @@ public class NewExerciseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_exercise);
         findViewsById();
-        User user = retrieverUserFromLoginActivity();
+        String loggedUserEmail = retrieverLoggedUserEmailFromExerciseListActivity();
         setupNewExerciseToolBar();
         setupNewExerciseCancelButton();
-        setupNewExerciseSaveButton(user);
+        setupNewExerciseSaveButton(loggedUserEmail);
     }
 
-    private User retrieverUserFromLoginActivity() {
-        return (User) getIntent().getSerializableExtra(Constants.USER);
+    private String retrieverLoggedUserEmailFromExerciseListActivity() {
+        return getIntent().getStringExtra(Constants.LOGGED_USER_EMAIL);
     }
 
     @Override
@@ -47,20 +47,21 @@ public class NewExerciseActivity extends AppCompatActivity {
     }
 
     private void setupNewExerciseCancelButton() {
-//        newExerciseCancelButton.setOnClickListener(v -> {
-//            Utils.createAlertDialogWithQuestion(getString(R.string.message_alert_dialog),
-//                    this);
-//        });
+        newExerciseCancelButton.setOnClickListener(v -> {
+            Utils.createAlertDialogWithQuestion(getString(R.string.new_exercise_message_cancel_create_alert_dialog),
+                    this, (dialog, which) -> finish()
+            );
+        });
     }
 
-    private void setupNewExerciseSaveButton(User user) {
+    private void setupNewExerciseSaveButton(String loggedUserEmail) {
     }
 
     private void setupNewExerciseToolBar() {
         setSupportActionBar(newExerciseToolBar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(getString(R.string.create_new_exercise));
+            getSupportActionBar().setTitle(getString(R.string.new_exercise_tool_bar_title));
         }
     }
 

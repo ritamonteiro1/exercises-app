@@ -1,12 +1,11 @@
 package com.example.leal.domains;
 
-import java.io.Serializable;
 
-public class User implements Serializable {
-    private String email;
-    private String password;
+public class UserRequest {
+    private final String email;
+    private final String password;
 
-    public User(String email, String password) {
+    public UserRequest(String email, String password) {
         this.email = email;
         this.password = password;
     }

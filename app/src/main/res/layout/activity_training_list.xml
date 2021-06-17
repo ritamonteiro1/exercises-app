@@ -33,7 +33,7 @@
         android:layout_marginBottom="30dp"
         android:textAllCaps="true"
         android:backgroundTint="@color/blue_bf5"
-        android:text="@string/create_new_training"
+        android:text="@string/new_training_tool_bar_title"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

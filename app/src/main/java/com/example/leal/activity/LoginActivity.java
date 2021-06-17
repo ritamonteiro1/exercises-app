@@ -10,7 +10,7 @@ import android.widget.EditText;
 
 import com.example.leal.R;
 import com.example.leal.constants.Constants;
-import com.example.leal.domains.User;
+import com.example.leal.domains.UserRequest;
 import com.example.leal.utils.Utils;
 
 
@@ -45,31 +45,31 @@ public class LoginActivity extends AppCompatActivity {
                     loginPasswordEditText, this
             );
             if (!isValidEmail || isEmptyPassword) return;
-            User user = new User(
+            UserRequest userRequest = new UserRequest(
                     loginEmailEditText.getText().toString(),
                     loginPasswordEditText.getText().toString()
             );
             showProgressDialog();
-            checkRegisteredUser(user);
+            checkRegisteredUser(userRequest);
         });
     }
 
-    private void checkRegisteredUser(User user) {
-        firebaseAuth.signInWithEmailAndPassword(user.getEmail(), user.getPassword()).
+    private void checkRegisteredUser(UserRequest userRequest) {
+        firebaseAuth.signInWithEmailAndPassword(userRequest.getEmail(), userRequest.getPassword()).
                 addOnCompleteListener(this, task -> {
                     loginProgressDialog.dismiss();
                     if (task.isSuccessful()) {
-                        moveToTrainingActivity(user);
+                        moveToTrainingActivity(userRequest.getEmail());
                     } else if (task.getException() instanceof FirebaseAuthInvalidUserException) {
-                        loginEmailTextInputLayout.setError(getString(R.string.unauthenticated_user));
+                        loginEmailTextInputLayout.setError(getString(R.string.login_error_unauthenticated_user));
                         loginPasswordTextInputLayout.setError(Constants.BLANK_SPACE);
                     } else if (task.getException() instanceof FirebaseNetworkException) {
-                        Utils.createErrorDialog(getString(R.string.connection_fail_error),
-                                getString(R.string.alert_dialog_positive_message_ok), this
+                        Utils.createErrorDialog(getString(R.string.error_connection_fail),
+                                getString(R.string.login_alert_dialog_positive_message_ok), this
                         );
                     } else {
-                        Utils.createErrorDialog(getString(R.string.ocurred_error),
-                                getString(R.string.alert_dialog_positive_message_ok), this
+                        Utils.createErrorDialog(getString(R.string.generic_error_try_again),
+                                getString(R.string.login_alert_dialog_positive_message_ok), this
                         );
                     }
                 });
@@ -83,41 +83,11 @@ public class LoginActivity extends AppCompatActivity {
         loginProgressDialog.setCancelable(false);
     }
 
-    private void moveToTrainingActivity(User user) {
-        sendUserToNewTrainingActivity(user);
-        sendUserToNewExerciseActivity(user);
-        sendUserToExerciseListActivity(user);
-        sendUserToEditTrainingActivity(user);
-        sendUserToEditExerciseActivity(user);
+    private void moveToTrainingActivity(String loggedUserEmail) {
         Intent intent = new Intent(this, TrainingListActivity.class);
-        intent.putExtra(Constants.USER, user);
+        intent.putExtra(Constants.LOGGED_USER_EMAIL, loggedUserEmail);
         startActivity(intent);
         finish();
-    }
-
-    private void sendUserToEditExerciseActivity(User user) {
-        Intent intent = new Intent(this, EditExerciseActivity.class);
-        intent.putExtra(Constants.USER, user);
-    }
-
-    private void sendUserToEditTrainingActivity(User user) {
-        Intent intent = new Intent(this, EditTrainingActivity.class);
-        intent.putExtra(Constants.USER, user);
-    }
-
-    private void sendUserToExerciseListActivity(User user) {
-        Intent intent = new Intent(this, ExerciseListActivity.class);
-        intent.putExtra(Constants.USER, user);
-    }
-
-    private void sendUserToNewExerciseActivity(User user) {
-        Intent intent = new Intent(this, NewExerciseActivity.class);
-        intent.putExtra(Constants.USER, user);
-    }
-
-    private void sendUserToNewTrainingActivity(User user) {
-        Intent intent = new Intent(this, NewTrainingActivity.class);
-        intent.putExtra(Constants.USER, user);
     }
 
     private void findViewsById() {

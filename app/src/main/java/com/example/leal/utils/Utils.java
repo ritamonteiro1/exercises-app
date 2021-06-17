@@ -18,7 +18,7 @@ public class Utils {
                                        Context context) {
         String value = editText.getText().toString();
         if (value.isEmpty()) {
-            textInputLayout.setError(context.getString(R.string.fill_the_field));
+            textInputLayout.setError(context.getString(R.string.login_error_fill_the_field));
             return true;
         } else {
             textInputLayout.setError(Constants.EMPTY);
@@ -33,10 +33,10 @@ public class Utils {
             textInputLayout.setError(Constants.EMPTY);
             return true;
         } else if (email.isEmpty()) {
-            textInputLayout.setError(context.getString(R.string.fill_the_field));
+            textInputLayout.setError(context.getString(R.string.login_error_fill_the_field));
             return false;
         } else {
-            textInputLayout.setError(context.getString(R.string.incorrect_email));
+            textInputLayout.setError(context.getString(R.string.login_error_incorrect_email));
             return false;
         }
     }

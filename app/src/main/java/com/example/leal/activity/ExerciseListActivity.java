@@ -23,7 +23,6 @@ import com.example.leal.constants.Constants;
 import com.example.leal.domains.Exercise;
 import com.example.leal.domains.ExerciseResponse;
 import com.example.leal.domains.ExerciseType;
-import com.example.leal.domains.User;
 import com.example.leal.utils.Utils;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -38,41 +37,57 @@ public class ExerciseListActivity extends AppCompatActivity {
     private RecyclerView exerciseListRecyclerView;
     private Button exerciseListButton;
     private ProgressDialog loginProgressDialog;
-    private TextView exerciseListTextView;
+    private TextView exerciseListTextView, exerciseListIdNumberTextView,
+            exerciseListIdTitleTextView;
+    private String loggedUserEmail, trainingNumberId, trainingDocumentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_list);
         findViewsById();
-        String idTraining = retrieverDataFromTrainingListActivity();
-        User user = retrieverUserFromLoginActivity();
-        setupExerciseListToolBar(idTraining);
-        getExerciseListFromFirebase(user, idTraining);
-        setupExerciseListButton();
+        loggedUserEmail = retrieverLoggedUserEmailFromTrainingListActivity();
+        trainingNumberId = retrieverTrainingNumberIdFromTrainingListActivity();
+        trainingDocumentId = retrieverTrainingDocumentIdFromTrainingListActivity();
+        setupExerciseListToolBar();
+        setupExerciseListButton(loggedUserEmail);
         showProgressDialog();
     }
 
-    private void getExerciseListFromFirebase(User user, String idTraining) {
+    private String retrieverTrainingDocumentIdFromTrainingListActivity() {
+        return getIntent().getStringExtra(Constants.TRAINING_NUMBER_ID);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getExerciseListFromFirebase(loggedUserEmail, trainingNumberId, trainingDocumentId);
+    }
+
+    private void getExerciseListFromFirebase(String loggedUserEmail, String trainingNumberId,
+                                             String trainingDocumentId) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(Constants.USERS_COLLECTION_PATH)
-                .document(Constants.EMAIL_DOCUMENT_PATH)
+                .document(loggedUserEmail)
                 .collection(Constants.TRAINING_LIST_COLLECTION_PATH)
-                .document(idTraining)
+                .document(trainingDocumentId)
                 .collection(Constants.EXERCISE_LIST_FIELD_TRAINING_LIST)
                 .get()
                 .addOnCompleteListener(task -> {
+                    loginProgressDialog.dismiss();
                     if (task.isSuccessful() && task.getResult() != null) {
-                        loginProgressDialog.dismiss();
+                        exerciseListIdNumberTextView.setText(trainingNumberId);
+                        exerciseListIdNumberTextView.setVisibility(View.VISIBLE);
+                        exerciseListIdTitleTextView.setVisibility(View.VISIBLE);
                         exerciseListRecyclerView.setVisibility(View.VISIBLE);
-                        ArrayList<ExerciseResponse> exerciseListResponse = new ArrayList<>();
+                        //ArrayList<ExerciseResponse> exerciseListResponse = new ArrayList<>();
                         Exercise exercise;
                         ArrayList<Exercise> exerciseList = new ArrayList<>();
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             ExerciseResponse exerciseResponse =
                                     document.toObject(ExerciseResponse.class);
                             exerciseResponse.setDocumentId(document.getId());
-                            exerciseListResponse.add(exerciseResponse);
+                            // exerciseListResponse.add(exerciseResponse);
                             exercise = new Exercise(
                                     exerciseResponse.getId(),
                                     exerciseResponse.getObservation(),
@@ -81,23 +96,29 @@ public class ExerciseListActivity extends AppCompatActivity {
                             );
                             exerciseList.add(exercise);
                         }
-                        setupRecyclerView(exerciseList, user, idTraining);
+                        setupRecyclerView(exerciseList, loggedUserEmail, trainingDocumentId);
                     } else if (task.getException() instanceof FirebaseNetworkException) {
-                        loginProgressDialog.dismiss();
                         exerciseListTextView.setVisibility(View.VISIBLE);
                     } else {
-                        loginProgressDialog.dismiss();
-                        exerciseListTextView.setText(getString(R.string.error_exercise_list));
+                        exerciseListTextView.setText(getString(R.string.generic_error_try_again));
                         exerciseListTextView.setVisibility(View.VISIBLE);
                     }
                 });
     }
 
-    private void setupRecyclerView(ArrayList<Exercise> exerciseList, User user, String idTraining) {
+    private void setupRecyclerView(ArrayList<Exercise> exerciseList, String loggedUserEmail,
+                                   String trainingDocumentId) {
         ExerciseListAdapter exerciseListAdapter = new ExerciseListAdapter(exerciseList, this,
-                exercise -> Utils.createAlertDialogWithQuestion(getString(R.string.item_exercise_delete_message),
-                        this, (dialog, which) -> deleteExercise(user, exercise, idTraining)
-                )
+                exercise -> Utils.createAlertDialogWithQuestion(getString(R.string.exercise_list_delete_question_exercise),
+                        this, (dialog, which) -> deleteExercise(loggedUserEmail, exercise,
+                                trainingDocumentId
+                        )
+                ), exerciseDocumentId -> {
+            Intent intent = new Intent(ExerciseListActivity.this, EditTrainingActivity.class);
+            intent.putExtra(Constants.EXERCISE_DOCUMENT_ID, exerciseDocumentId);
+            intent.putExtra(Constants.LOGGED_USER_EMAIL, loggedUserEmail);
+            startActivity(intent);
+        }
         );
         setupAdapter(exerciseListAdapter);
     }
@@ -112,25 +133,28 @@ public class ExerciseListActivity extends AppCompatActivity {
         exerciseListRecyclerView.setLayoutManager(layoutManager);
     }
 
-    private void deleteExercise(User user, Exercise exercise, String idTraining) {
+    private void deleteExercise(String loggedUserEmail, Exercise exercise,
+                                String trainingDocumentId) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(Constants.USERS_COLLECTION_PATH)
-                .document(Constants.EMAIL_DOCUMENT_PATH)
+                .document(loggedUserEmail)
                 .collection(Constants.TRAINING_LIST_COLLECTION_PATH)
-                .document(idTraining)
+                .document(trainingDocumentId)
                 .collection(Constants.EXERCISE_LIST_FIELD_TRAINING_LIST)
                 .document(exercise.getDocumentId())
                 .delete()
-                .addOnSuccessListener(unused -> Toast.makeText(ExerciseListActivity.this,
-                        getString(R.string.deleted_exercise), Toast.LENGTH_LONG
+                .addOnSuccessListener(unused -> Toast.makeText(
+                        ExerciseListActivity.this,
+                        getString(R.string.exercise_list_successful_deleted_exercise),
+                        Toast.LENGTH_LONG
                 ).show())
                 .addOnFailureListener(e -> Toast.makeText(ExerciseListActivity.this,
-                        getString(R.string.error_deleted_exercise), Toast.LENGTH_LONG
+                        getString(R.string.generic_error_try_again), Toast.LENGTH_LONG
                 ).show());
     }
 
-    private User retrieverUserFromLoginActivity() {
-        return (User) getIntent().getSerializableExtra(Constants.USER);
+    private String retrieverLoggedUserEmailFromTrainingListActivity() {
+        return getIntent().getStringExtra(Constants.LOGGED_USER_EMAIL);
     }
 
     private void showProgressDialog() {
@@ -141,8 +165,8 @@ public class ExerciseListActivity extends AppCompatActivity {
         loginProgressDialog.setCancelable(false);
     }
 
-    private String retrieverDataFromTrainingListActivity() {
-        return getIntent().getStringExtra(Constants.TRAINING_DETAILS);
+    private String retrieverTrainingNumberIdFromTrainingListActivity() {
+        return getIntent().getStringExtra(Constants.TRAINING_NUMBER_ID);
     }
 
     @Override
@@ -154,20 +178,21 @@ public class ExerciseListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void setupExerciseListButton() {
-        exerciseListButton.setOnClickListener(v -> moveToNewExerciseActivity());
+    private void setupExerciseListButton(String loggedUserEmail) {
+        exerciseListButton.setOnClickListener(v -> moveToNewExerciseActivity(loggedUserEmail));
     }
 
-    private void moveToNewExerciseActivity() {
+    private void moveToNewExerciseActivity(String loggedUserEmail) {
         Intent intent = new Intent(this, NewExerciseActivity.class);
+        intent.putExtra(Constants.LOGGED_USER_EMAIL, loggedUserEmail);
         startActivity(intent);
     }
 
-    private void setupExerciseListToolBar(String idTraining) {
+    private void setupExerciseListToolBar() {
         setSupportActionBar(exerciseListToolBar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(getString(R.string.exercise_list) + Constants.BLANK_SPACE + idTraining);
+            getSupportActionBar().setTitle(getString(R.string.exercise_list_tool_bar_title));
         }
     }
 
@@ -176,5 +201,7 @@ public class ExerciseListActivity extends AppCompatActivity {
         exerciseListRecyclerView = findViewById(R.id.exerciseListRecyclerView);
         exerciseListButton = findViewById(R.id.exerciseListButton);
         exerciseListTextView = findViewById(R.id.exerciseListTextView);
+        exerciseListIdNumberTextView = findViewById(R.id.exerciseListIdNumberTextView);
+        exerciseListIdTitleTextView = findViewById(R.id.exerciseListIdTitleTextView);
     }
 }

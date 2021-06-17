@@ -1,56 +1,74 @@
 <resources>
+    <!-- AndroidManifest-->
     <string name="app_name">Leal</string>
-    <string name="content_description_logo_leal_image_view">Imagem que contém o logo da Leal</string>
-    <string name="login_welcome_leal">Bem-vindo a Leal</string>
+    <!-- LoginActivity -->
+    <string name="login_content_description_leal_logo_image_view">Imagem que contém o logo da Leal</string>
+    <string name="login_welcome_to_leal_text_view">Bem-vindo a Leal</string>
     <string name="login_email_text_hint">Email</string>
     <string name="login_password_text_hint">Senha</string>
-    <string name="login_button_sign_in">Entrar</string>
-    <string name="fill_the_field">Preencha o campo</string>
-    <string name="incorrect_email">Preencha o campo no formato de E-mail. Ex: abc@abc.com.br</string>
-    <string name="training_list">Treinos</string>
-    <string name="item_training_number">Número do treino:</string>
-    <string name="item_training_content_description_delete">Clique aqui para apagar este treino</string>
-    <string name="item_training_content_description_edit">Clique aqui para editar a descrição deste treino</string>
-    <string name="create_new_exercise_text_button">Criar novo exercício</string>
+    <string name="login_sign_in_button_text">Entrar</string>
+    <string name="login_error_fill_the_field">Preencha o campo</string>
+    <string name="login_error_incorrect_email">Preencha o campo no formato de E-mail. Ex: abc@abc.com.br</string>
+    <string name="login_error_unauthenticated_user">Usuário não autenticado</string>
+    <string name="login_alert_dialog_positive_message_ok">OK</string>
+    <!-- Generic errors -->
+    <string name="error_connection_fail">Falha na conexão com a internet</string>
+    <string name="generic_error_try_again">Ocorreu um erro. Tente novamente mais tarde</string>
+    <!-- TrainingListActivity -->
+    <string name="training_list_tool_bar_title">Lista de treinos</string>
+    <string name="training_list_error_deleted_training">Error ao apagar treino. Tente novamente</string>
+    <string name="training_list_successfully_deleted_training">Treino apagado</string>
+    <string name="training_list_delete_question_training">Deseja mesmo apagar este treino?</string>
+    <!-- NewTrainingActivity -->
+    <string name="new_training_tool_bar_title">Criar novo treino</string>
+    <string name="new_training_message_cancel_create_alert_dialog">Deseja mesmo cancelar a criação do treino?</string>
+    <string name="new_training_successfully_create_training">Treino criado com sucesso</string>
+    <string name="new_training_error_fill_the_field">Preencha a descrição do novo treino</string>
+    <!-- EditTrainingActivity -->
+    <string name="edit_training_tool_bar_title">Editar treino</string>
+    <string name="edit_training_successfull_change_description_training">Alteração salva com sucesso</string>
+    <string name="edit_training_error_fill_the_field">Preencha a descrição do treino</string>
+    <string name="edit_training_message_cancel_edit_alert_dialog">Deseja mesmo cancelar a edição do treino?</string>
+    <!--     ExerciseListActivity -->
+    <string name="exercise_list_tool_bar_title">Lista de exercícios</string>
+    <string name="exercise_list_successful_deleted_exercise">Exercício apagado com sucesso</string>
+    <string name="exercise_list_delete_question_exercise">Deseja mesmo apagar este exercício?</string>
+    <!--     EditExerciseActivity -->
+    <string name="edit_exercise_tool_bar_title">Editar exercício</string>
+    <string name="edit_exercise_message_cancel_edit_alert_dialog">Deseja mesmo cancelar a edição do exercício?</string>
+    <!--     NewExerciseActivity -->
+    <string name="new_exercise_tool_bar_title">Criar novo exercício</string>
+    <string name="new_exercise_message_cancel_create_alert_dialog">Deseja mesmo cancelar a criação do exercício?</string>
+    <!--     item_training.xml -->
+    <string name="item_training_id">Número do treino:</string>
+    <string name="item_training_description">Descrição do treino:</string>
+    <string name="item_training_registration_date">Data de cadastro:</string>
+    <string name="item_training_content_description_delete_training">Clique aqui para apagar este treino</string>
+    <string name="item_training_content_description_edit_training">Clique aqui para editar a descrição deste treino</string>
+    <!--     item_exercise.xml -->
     <string name="item_exercise_content_description">Imagem que corresponde ao tipo de exercício</string>
     <string name="item_exercise_content_description_edit">Clique aqui para editar as observações do exercício</string>
     <string name="item_exercise_content_description_delete">Clique aqui para deletar este exercício</string>
     <string name="item_exercise_number">Número do exercício</string>
+    <!--     activity_exercise_list.xml -->
+    <string name="create_new_exercise_text_button">Criar novo exercício</string>
+    <string name="exercise_list_training">Treino:</string>
+    <!--     button generic text -->
     <string name="cancel_text_button">Cancelar</string>
     <string name="save_text_button">Salvar</string>
+    <!--     activity_new_training.xml -->
     <string name="description_new_training_text_hint">Digite a descrição do novo treino</string>
+    <!--     activity_new_exercise.xml -->
     <string name="exercise_type">Selecione o tipo de exercício</string>
     <string name="content_description_image_new_exercise">Imagem correspondente ao novo exercício</string>
     <string name="observation_text_hint">Observações</string>
-    <string name="unauthenticated_user">Usuário não autenticado</string>
-    <string name="ocurred_error">Ocorreu um erro. Tente novamente mais tarde</string>
-    <string name="connection_fail_error">Falha na conexão com a internet</string>
-    <string name="alert_dialog_positive_message_ok">OK</string>
-    <string name="trainings">Lista de treinos</string>
+    <!--     Utils -->
     <string name="positive_message_alert_dialog">Sim</string>
     <string name="negative_message_alert_dialog">Não</string>
-    <string name="message_alert_dialog">Deseja mesmo cancelar?</string>
-    <string name="item_training_delete_message">Deseja mesmo apagar este treino?</string>
+    <!--     activity_edit_training.xml -->
     <string name="edit_description_text_hint">Edite a descrição do treino</string>
-    <string name="edit_observation_exercise_text_hint">Edite as observações do exercício</string>
+    <!--     activity_edit_exercise.xml -->
     <string name="edit_description_exercise_text_hint">Edite as observações do exercício</string>
-    <string name="edit_exercise">Editar exercício</string>
-    <string name="edit_training">Editar treino</string>
-    <string name="exercise_list">Exercícios do treino:</string>
-    <string name="create_new_exercise">Criar novo exercício</string>
-    <string name="create_new_training">Criar novo treino</string>
-    <string name="item_exercise_delete_message">Deseja mesmo apagar este exercício?</string>
-    <string name="deleted_training">Treino apagado!</string>
-    <string name="error_deleted_training">Erro ao apagar treino. Tente novamente</string>
+    <!--     activity_training_list.xml -->
     <string name="error_connection_training_list">Falha na conexão. Tente novamente.</string>
-    <string name="error_training_list">"Ocorreu um erro. Tente novamente mais tarde."</string>
-    <string name="error_exercise_list">"Ocorreu um erro. Tente novamente mais tarde."</string>
-    <string name="item_training_registration_date">Data de cadastro:</string>
-    <string name="item_training_description">Descrição do treino:</string>
-    <string name="edited_description_training">Descrição editada!</string>
-    <string name="error_edited_description_training">Ocorreu um erro. Sua alteração não foi salva</string>
-    <string name="created_training">Treino criado!</string>
-    <string name="ocurred_error_exercise_list">Ocorreu um erro. Tente novamente.</string>
-    <string name="deleted_exercise">Exercício apagado!</string>
-    <string name="error_deleted_exercise">Ocorreu um erro. Tente novamente.</string>
 </resources>

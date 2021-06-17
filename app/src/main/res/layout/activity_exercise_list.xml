@@ -26,9 +26,9 @@
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
         android:layout_marginBottom="30dp"
-        android:textAllCaps="true"
         android:backgroundTint="@color/blue_bf5"
         android:text="@string/create_new_exercise_text_button"
+        android:textAllCaps="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -38,16 +38,16 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="4dp"
-        android:visibility="gone"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="2dp"
         android:layout_marginEnd="4dp"
         android:layout_marginBottom="20dp"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/exerciseListButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exerciseListToolBar"
+        app:layout_constraintTop_toBottomOf="@+id/exerciseListIdNumberTextView"
         tools:itemCount="10"
-        tools:listitem="@layout/item_exercise"/>
+        tools:listitem="@layout/item_exercise" />
 
     <TextView
         android:id="@+id/exerciseListTextView"
@@ -56,10 +56,40 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="100dp"
         android:layout_marginEnd="10dp"
-        android:text="@string/ocurred_error_exercise_list"
+        android:text="@string/generic_error_try_again"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/exerciseListToolBar" />
+
+    <TextView
+        android:id="@+id/exerciseListIdTitleTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center"
+        android:text="@string/exercise_list_training"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/exerciseListToolBar" />
+
+    <TextView
+        android:id="@+id/exerciseListIdNumberTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="20dp"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textColor="@color/green_aab"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/exerciseListIdTitleTextView"
+        tools:text="0000" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

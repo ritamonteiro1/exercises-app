@@ -11,6 +11,16 @@ public class Training implements Serializable {
     private String description;
     private Timestamp date;
 
+    public Training() {
+    }
+
+    public Training(Long id, String description, Timestamp date) {
+        this.documentId = documentId;
+        this.id = id;
+        this.description = description;
+        this.date = date;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }

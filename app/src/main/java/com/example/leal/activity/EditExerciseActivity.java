@@ -11,7 +11,8 @@ import android.widget.EditText;
 
 import com.example.leal.R;
 import com.example.leal.constants.Constants;
-import com.example.leal.domains.User;
+import com.example.leal.utils.Utils;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class EditExerciseActivity extends AppCompatActivity {
     private Toolbar editExerciseToolBar;
@@ -23,17 +24,36 @@ public class EditExerciseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_exercise);
         findViewsById();
-        User user = retrieverUserFromLoginActivity();
+        String loggedEmailUser = retrieverLoggedUserEmailFromExerciseListActivity();
+        String exerciseDocumentId = retrieverDataFromExerciseListActivity();
         setupEditExerciseToolBar();
-        setupSaveButton(user);
+        setupSaveButton(loggedEmailUser, exerciseDocumentId);
+        setupCancelButton();
     }
 
-    private void setupSaveButton(User user) {
-
+    private String retrieverDataFromExerciseListActivity() {
+        return getIntent().getStringExtra(Constants.EXERCISE_DOCUMENT_ID);
     }
 
-    private User retrieverUserFromLoginActivity() {
-        return (User) getIntent().getSerializableExtra(Constants.USER);
+    private void setupCancelButton() {
+        editExerciseCancelButton.setOnClickListener(v -> {
+            Utils.createAlertDialogWithQuestion(getString(R.string.edit_exercise_message_cancel_edit_alert_dialog),
+                    this, (dialog, which) -> finish());
+        });
+    }
+
+    private void setupSaveButton(String loggedUserEmail, String exerciseDocumentId) {
+//        editExerciseSaveButton.setOnClickListener(v -> {
+//            FirebaseFirestore db = FirebaseFirestore.getInstance();
+//            db.collection(Constants.USERS_COLLECTION_PATH)
+//                    .document(loggedUserEmail)
+//                    .collection(Constants.TRAINING_LIST_COLLECTION_PATH)
+//                    .
+//        });
+    }
+
+    private String retrieverLoggedUserEmailFromExerciseListActivity() {
+        return getIntent().getStringExtra(Constants.LOGGED_USER_EMAIL);
     }
 
     private void findViewsById() {
@@ -56,7 +76,7 @@ public class EditExerciseActivity extends AppCompatActivity {
         setSupportActionBar(editExerciseToolBar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle(getString(R.string.edit_exercise));
+            getSupportActionBar().setTitle(getString(R.string.edit_exercise_tool_bar_title));
         }
     }
 }

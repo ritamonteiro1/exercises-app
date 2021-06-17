@@ -19,27 +19,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <ImageButton
             android:id="@+id/itemTrainingEditImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="14dp"
-            android:contentDescription="@string/item_training_content_description_edit"
-            android:src="@drawable/ic_edit"
-            app:tint="@color/gray_585">
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/item_training_content_description_edit_training"
+            android:src="@drawable/ic_edit">
 
-        </ImageView>
+        </ImageButton>
 
-        <ImageView
+        <ImageButton
             android:id="@+id/itemTrainingDeleteImageView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
-            android:contentDescription="@string/item_training_content_description_delete"
-            android:src="@drawable/ic_trash"
-            app:tint="@color/gray_585">
+            android:padding="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/item_training_content_description_delete_training"
+            android:src="@drawable/ic_trash">
 
-        </ImageView>
+        </ImageButton>
 
     </LinearLayout>
 
@@ -59,7 +61,7 @@
             android:id="@+id/itemTrainingNumberTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/item_training_number"
+            android:text="@string/item_training_id"
             android:textColor="@color/gray_585" />
 
         <TextView

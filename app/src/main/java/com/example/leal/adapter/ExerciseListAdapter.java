@@ -1,7 +1,6 @@
 package com.example.leal.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,27 +11,27 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.leal.R;
-import com.example.leal.activity.EditTrainingActivity;
-import com.example.leal.activity.ExerciseListActivity;
 import com.example.leal.click.listener.OnExerciseDeleteClickListener;
-import com.example.leal.constants.Constants;
+import com.example.leal.click.listener.OnExerciseEditClickListener;
 import com.example.leal.domains.Exercise;
-import com.example.leal.utils.Utils;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapter.ExerciseListViewHolder> {
-    private List<Exercise> exerciseList;
-    private Context context;
+    private final List<Exercise> exerciseList;
+    private final Context context;
     private final OnExerciseDeleteClickListener onDeleteClickListener;
+    private final OnExerciseEditClickListener onEditClickListener;
 
     public ExerciseListAdapter(List<Exercise> exerciseList, Context context,
-                               OnExerciseDeleteClickListener onDeleteClickListener) {
+                               OnExerciseDeleteClickListener onDeleteClickListener,
+                               OnExerciseEditClickListener onEditClickListener) {
         this.exerciseList = exerciseList;
         this.context = context;
         this.onDeleteClickListener = onDeleteClickListener;
+        this.onEditClickListener = onEditClickListener;
     }
 
     @NonNull
@@ -47,7 +46,9 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull @org.jetbrains.annotations.NotNull ExerciseListAdapter.ExerciseListViewHolder holder, int position) {
-        holder.bind(exerciseList.get(position), context, onDeleteClickListener);
+        holder.bind(exerciseList.get(position), onDeleteClickListener,
+                onEditClickListener
+        );
     }
 
     @Override
@@ -56,9 +57,11 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
     }
 
     public static class ExerciseListViewHolder extends RecyclerView.ViewHolder {
-        private ImageView itemExerciseImageView, itemExerciseEditImageView,
-                itemExerciseDeleteImageView;
-        private TextView itemExerciseIdTextView, itemExerciseDescriptionTextView;
+        private final ImageView itemExerciseImageView;
+        private final ImageView itemExerciseEditImageView;
+        private final ImageView itemExerciseDeleteImageView;
+        private final TextView itemExerciseIdTextView;
+        private final TextView itemExerciseDescriptionTextView;
 
         public ExerciseListViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -70,23 +73,13 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
                     itemView.findViewById(R.id.itemTrainingDescriptionTextView);
         }
 
-        public void bind(Exercise exercise, Context context,
-                         OnExerciseDeleteClickListener onDeleteClickListener) {
-            itemExerciseEditImageView.setOnClickListener(v -> {
-                Intent intent = new Intent(context, EditTrainingActivity.class);
-                intent.putExtra(Constants.EXERCISE_OBSERVATION, exercise);
-                context.startActivity(intent);
-            });
-            itemExerciseDeleteImageView.setOnClickListener(v ->
-                    onDeleteClickListener.onClick(exercise)
-            );
+        public void bind(Exercise exercise,
+                         OnExerciseDeleteClickListener onDeleteClickListener,
+                         OnExerciseEditClickListener onEditClickListener) {
+            itemExerciseEditImageView.setOnClickListener(v -> onEditClickListener.onClick(exercise.getDocumentId()));
+            itemExerciseDeleteImageView.setOnClickListener(v -> onDeleteClickListener.onClick(exercise));
             itemExerciseDescriptionTextView.setText(exercise.getObservation());
-            itemExerciseIdTextView.setText(exercise.getId());
-            itemView.setOnClickListener(v -> {
-                Intent intent = new Intent(context, ExerciseListActivity.class);
-                intent.putExtra(Constants.EXERCISE_DETAILS, String.valueOf(exercise.getId()));
-                context.startActivity(intent);
-            });
+            itemExerciseIdTextView.setText(String.valueOf(exercise.getId()));
         }
     }
 }
