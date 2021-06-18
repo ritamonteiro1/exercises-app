@@ -3,18 +3,26 @@ package com.example.leal.domains;
 import java.io.Serializable;
 
 public class ExerciseRequest implements Serializable {
-    private int id;
+    private Long id;
     private String urlImage;
     private String observation;
     private ExerciseType type;
     private String documentId;
 
-    public ExerciseRequest(int id, String observation, ExerciseType type, String documentId,
+    public ExerciseRequest(Long id, String observation, ExerciseType type, String documentId,
                            String urlImage) {
         this.id = id;
         this.observation = observation;
         this.type = type;
         this.documentId = documentId;
+        this.urlImage = urlImage;
+    }
+
+    public ExerciseRequest(Long id, String observation, ExerciseType type,
+                           String urlImage) {
+        this.id = id;
+        this.observation = observation;
+        this.type = type;
         this.urlImage = urlImage;
     }
 
@@ -34,7 +42,7 @@ public class ExerciseRequest implements Serializable {
         this.type = type;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -46,7 +54,7 @@ public class ExerciseRequest implements Serializable {
         this.documentId = documentId;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 

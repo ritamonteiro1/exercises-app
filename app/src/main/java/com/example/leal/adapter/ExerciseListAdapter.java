@@ -11,9 +11,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.leal.R;
 import com.example.leal.click.listener.OnExerciseDeleteClickListener;
 import com.example.leal.click.listener.OnExerciseEditClickListener;
+import com.example.leal.constants.Constants;
 import com.example.leal.domains.ExerciseRequest;
 import com.example.leal.domains.ExerciseType;
 
@@ -49,7 +51,7 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
     @Override
     public void onBindViewHolder(@NonNull @org.jetbrains.annotations.NotNull ExerciseListAdapter.ExerciseListViewHolder holder, int position) {
         holder.bind(
-                exerciseRequestList.get(position), onDeleteClickListener,
+                exerciseRequestList.get(position), context, onDeleteClickListener,
                 onEditClickListener
         );
     }
@@ -71,14 +73,15 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
             super(itemView);
             itemExerciseImageView = itemView.findViewById(R.id.itemExerciseImageView);
             itemExerciseEditImageButton = itemView.findViewById(R.id.itemExerciseEditImageButton);
-            itemExerciseDeleteImageButton = itemView.findViewById(R.id.itemExerciseDeleteImageButton);
+            itemExerciseDeleteImageButton =
+                    itemView.findViewById(R.id.itemExerciseDeleteImageButton);
             itemExerciseIdTextView = itemView.findViewById(R.id.itemExerciseIdTextView);
             itemExerciseDescriptionTextView =
                     itemView.findViewById(R.id.itemExerciseDescriptionTextView);
             itemExerciseTypeTextView = itemView.findViewById(R.id.itemExerciseTypeTextView);
         }
 
-        public void bind(ExerciseRequest exerciseRequest,
+        public void bind(ExerciseRequest exerciseRequest, Context context,
                          OnExerciseDeleteClickListener onDeleteClickListener,
                          OnExerciseEditClickListener onEditClickListener) {
             itemExerciseEditImageButton.setOnClickListener(v -> onEditClickListener.onClick(exerciseRequest.getDocumentId()));
@@ -86,6 +89,11 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
             itemExerciseDescriptionTextView.setText(exerciseRequest.getObservation());
             itemExerciseIdTextView.setText(String.valueOf(exerciseRequest.getId()));
             itemExerciseTypeTextView.setText(ExerciseType.toStringExerciseType(exerciseRequest.getType()));
+            if (exerciseRequest.getType().getDescription().equals(ExerciseType.AEROBIC.getDescription())) {
+                Glide.with(context).load(Constants.AEROBIC_PHOTO_URL_FROM_STORAGE).into(itemExerciseImageView);
+            } else {
+                Glide.with(context).load(Constants.BODYBUILDING_PHOTO_URL_FROM_STORAGE).into(itemExerciseImageView);
+            }
         }
     }
 }

@@ -40,6 +40,7 @@ public class ExerciseListActivity extends AppCompatActivity {
     private TextView exerciseListTextView, exerciseListIdNumberTextView,
             exerciseListIdTitleTextView, exerciseListEmptyTextView;
     private String loggedUserEmail, trainingNumberId, trainingDocumentId;
+    private View exerciseListDivisionView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +81,7 @@ public class ExerciseListActivity extends AppCompatActivity {
                         exerciseListIdNumberTextView.setVisibility(View.VISIBLE);
                         exerciseListIdTitleTextView.setVisibility(View.VISIBLE);
                         exerciseListRecyclerView.setVisibility(View.VISIBLE);
+                        exerciseListDivisionView.setVisibility(View.VISIBLE);
                         ExerciseRequest exerciseRequest;
                         ArrayList<ExerciseRequest> exerciseRequestList = new ArrayList<>();
                         for (QueryDocumentSnapshot document : task.getResult()) {
@@ -207,5 +209,6 @@ public class ExerciseListActivity extends AppCompatActivity {
         exerciseListIdNumberTextView = findViewById(R.id.exerciseListIdNumberTextView);
         exerciseListIdTitleTextView = findViewById(R.id.exerciseListIdTitleTextView);
         exerciseListEmptyTextView = findViewById(R.id.exerciseListEmptyTextView);
+        exerciseListDivisionView = findViewById(R.id.exerciseListDivisionView);
     }
 }

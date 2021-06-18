@@ -25,11 +25,16 @@
         android:id="@+id/newExerciseSpinner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="20dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:padding="10dp"
         android:prompt="@string/exercise_type"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newExerciseToolBar" />
+        app:layout_constraintTop_toBottomOf="@+id/newExerciseSelectCategoryTextView" />
 
     <ImageView
         android:id="@+id/newExerciseImageView"
@@ -99,5 +104,19 @@
 
         </Button>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/newExerciseSelectCategoryTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="12dp"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:text="@string/select_category_exercise_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/newExerciseToolBar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

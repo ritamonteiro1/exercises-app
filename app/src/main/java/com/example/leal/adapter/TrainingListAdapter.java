@@ -52,7 +52,7 @@ public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListAdapte
     public void onBindViewHolder(@NotNull TrainingListAdapter.TrainingListViewHolder holder,
                                  int position) {
         holder.bind(
-                trainingResponseList.get(position), onDeleteClickListener,
+                trainingResponseList.get(position), context, onDeleteClickListener,
                 onEditClickListener, onItemClickListener
         );
     }
@@ -72,7 +72,8 @@ public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListAdapte
         public TrainingListViewHolder(@NonNull View itemView) {
             super(itemView);
             itemTrainingEditImageButton = itemView.findViewById(R.id.itemTrainingEditImageButton);
-            itemTrainingDeleteImageButton = itemView.findViewById(R.id.itemTrainingDeleteImageButton);
+            itemTrainingDeleteImageButton =
+                    itemView.findViewById(R.id.itemTrainingDeleteImageButton);
             itemTrainingIdTextView = itemView.findViewById(R.id.itemTrainingIdTextView);
             itemTrainingDescriptionTextView =
                     itemView.findViewById(R.id.itemTrainingDescriptionTextView);
@@ -80,7 +81,7 @@ public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListAdapte
                     itemView.findViewById(R.id.itemTrainingDateFormatTextView);
         }
 
-        public void bind(TrainingResponse trainingResponse,
+        public void bind(TrainingResponse trainingResponse, Context context,
                          OnTrainingDeleteClickListener onDeleteClickListener,
                          OnTrainingEditClickListener onEditClickListener,
                          OnTrainingItemClickListener onItemClickListener) {
@@ -89,7 +90,8 @@ public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListAdapte
             itemTrainingDeleteImageButton.setOnClickListener(v -> onDeleteClickListener.onClick(trainingResponse));
             itemTrainingEditImageButton.setOnClickListener(v -> onEditClickListener.onClick(trainingResponse.getDocumentId()));
             itemView.setOnClickListener(v -> onItemClickListener.onClick((String.valueOf(trainingResponse.getId())), trainingResponse.getDocumentId()));
-           // itemTrainingDateFormatTextView.setText(Utils.convertTimestampToString(trainingResponse.getDate()));
+            // itemTrainingDateFormatTextView.setText(Utils.convertTimestampToString
+            // (trainingResponse.getDate()));
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.example.leal.domains;
 
 public class ExerciseResponse {
-    private int id;
+    private Long id;
     private String urlImage;
     private String observation;
     private String type;
@@ -15,7 +15,7 @@ public class ExerciseResponse {
         this.documentId = documentId;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
