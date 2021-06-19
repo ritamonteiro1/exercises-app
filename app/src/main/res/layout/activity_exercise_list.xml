@@ -50,19 +50,6 @@
         tools:listitem="@layout/item_exercise" />
 
     <TextView
-        android:id="@+id/exerciseListTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="10dp"
-        android:text="@string/error_connection_fail"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/exerciseListToolBar" />
-
-    <TextView
         android:id="@+id/exerciseListIdTitleTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

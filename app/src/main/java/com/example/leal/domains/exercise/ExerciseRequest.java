@@ -3,10 +3,10 @@ package com.example.leal.domains.exercise;
 import java.io.Serializable;
 
 public class ExerciseRequest implements Serializable {
-    private Long id;
-    private String urlImage;
-    private String observation;
-    private String type;
+    private final Long id;
+    private final String urlImage;
+    private final String observation;
+    private final String type;
 
     public ExerciseRequest(Long id, String observation, String type,
                            String urlImage) {
@@ -20,31 +20,15 @@ public class ExerciseRequest implements Serializable {
         return urlImage;
     }
 
-    public void setUrlImage(String urlImage) {
-        this.urlImage = urlImage;
-    }
-
-    public void setObservation(String observation) {
-        this.observation = observation;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Long getId() {
         return id;
     }
 
-    public String getObservation() {
-        return observation;
-    }
-
     public String getType() {
         return type;
+    }
+
+    public String getObservation() {
+        return observation;
     }
 }
