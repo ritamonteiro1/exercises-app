@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.leal.R;
 import com.example.leal.constants.Constants;
 import com.example.leal.utils.Utils;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
@@ -20,20 +21,29 @@ public class EditTrainingActivity extends AppCompatActivity {
     private Toolbar editTrainingToolBar;
     private EditText editTrainingEditTextMultiLine;
     private Button editTrainingCancelButton, editTrainingSaveButton;
+    private CollectionReference trainingListCollection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_training);
         findViewsById();
-        String loggedUserEmail = retrieverLoggedUserEmailFromTrainingListActivity();
-        String trainingDocumentId = retrieverTrainingDocumentIdFromTrainingListActivity();
+        String loggedUserEmail = retrieverLoggedUserEmail();
+        String trainingDocumentId = retrieverTrainingDocumentId();
         setupEditTrainingToolBar();
-        setupSaveButton(trainingDocumentId, loggedUserEmail);
+        setupSaveButton(trainingDocumentId);
+        setupTrainingListCollection(loggedUserEmail);
         setupCancelButton();
     }
 
-    private String retrieverLoggedUserEmailFromTrainingListActivity() {
+    private void setupTrainingListCollection(String loggedUserEmail) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        trainingListCollection =
+                db.collection(Constants.USERS_COLLECTION_PATH).
+                        document(loggedUserEmail).collection(Constants.TRAINING_LIST_COLLECTION_PATH);
+    }
+
+    private String retrieverLoggedUserEmail() {
         return getIntent().getStringExtra(Constants.LOGGED_USER_EMAIL);
     }
 
@@ -43,7 +53,7 @@ public class EditTrainingActivity extends AppCompatActivity {
         ));
     }
 
-    private void setupSaveButton(String trainingDocumentId, String loggedUserEmail) {
+    private void setupSaveButton(String trainingDocumentId) {
         editTrainingSaveButton.setOnClickListener(v -> {
             String editedDescriptionTraining = editTrainingEditTextMultiLine.getText().toString();
             if (editedDescriptionTraining.isEmpty()) {
@@ -53,29 +63,30 @@ public class EditTrainingActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG
                 ).show();
             } else {
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                db.collection(Constants.USERS_COLLECTION_PATH)
-                        .document(loggedUserEmail)
-                        .collection(Constants.TRAINING_LIST_COLLECTION_PATH)
-                        .document(trainingDocumentId)
-                        .update(Constants.DESCRIPTION_FIELD_TRAINING_LIST, editedDescriptionTraining
-                        )
-                        .addOnSuccessListener(unused -> Toast.makeText(
-                                EditTrainingActivity.this,
-                                getString(R.string.edit_training_successfull_change_description_training),
-                                Toast.LENGTH_LONG
-                        ).show())
-                        .addOnFailureListener(e -> Toast.makeText(
-                                EditTrainingActivity.this,
-                                getString(R.string.generic_error_try_again),
-                                Toast.LENGTH_LONG
-                        ).show());
-                finish();
+                editTraining(trainingDocumentId, editedDescriptionTraining);
             }
         });
     }
 
-    private String retrieverTrainingDocumentIdFromTrainingListActivity() {
+    private void editTraining(String trainingDocumentId, String editedDescriptionTraining) {
+        trainingListCollection
+                .document(trainingDocumentId)
+                .update(Constants.DESCRIPTION_FIELD_TRAINING_LIST, editedDescriptionTraining
+                )
+                .addOnSuccessListener(unused -> {
+                    Toast.makeText(
+                            EditTrainingActivity.this,
+                            getString(R.string.edit_training_successfull_change_description_training),
+                            Toast.LENGTH_LONG
+                    ).show();
+                    finish();
+                })
+                .addOnFailureListener(e -> Utils.createErrorDialog(getString(R.string.generic_error_try_again),
+                        getString(R.string.alert_dialog_positive_message_ok), this
+                ));
+    }
+
+    private String retrieverTrainingDocumentId() {
         return getIntent().getStringExtra(Constants.TRAINING_DOCUMENT_ID);
     }
 
