@@ -20,15 +20,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.leal.R;
 import com.example.leal.activity.exercise.ExerciseListActivity;
 import com.example.leal.adapter.TrainingListAdapter;
+import com.example.leal.click.listener.OnTrainingDeleteClickListener;
+import com.example.leal.click.listener.OnTrainingEditClickListener;
+import com.example.leal.click.listener.OnTrainingItemClickListener;
 import com.example.leal.constants.Constants;
 import com.example.leal.domains.TrainingResponse;
 import com.example.leal.utils.Utils;
 
 import com.google.firebase.FirebaseNetworkException;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,27 +45,37 @@ public class TrainingListActivity extends AppCompatActivity {
     private Button trainingListButton;
     private Toolbar trainingListToolBar;
     private TextView trainingListTextView;
-    private ProgressDialog loginProgressDialog;
+    private ProgressDialog progressDialog;
     private String loggedUserEmail;
+    private CollectionReference trainingListCollection;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_training_list);
         findViewsById();
-        loggedUserEmail = retrieverLoggedUserEmailFromLoginActivity();
+        loggedUserEmail = retrieverLoggedUserEmail();
+        setupTrainingListCollection();
         setupTrainingListButton(loggedUserEmail);
         setupTrainingListToolBar();
+    }
+
+    private void setupTrainingListCollection() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        trainingListCollection =
+                db.collection(Constants.USERS_COLLECTION_PATH).
+                        document(loggedUserEmail).collection(Constants.TRAINING_LIST_COLLECTION_PATH);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        showProgressDialog();
+        progressDialog = Utils.showProgressDialog(this);
         getTrainingListFromFirebase(loggedUserEmail);
     }
 
-    private String retrieverLoggedUserEmailFromLoginActivity() {
+    private String retrieverLoggedUserEmail() {
         return getIntent().getStringExtra(Constants.LOGGED_USER_EMAIL);
     }
 
@@ -91,22 +107,22 @@ public class TrainingListActivity extends AppCompatActivity {
     }
 
     public void getTrainingListFromFirebase(String loggedUserEmail) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(Constants.USERS_COLLECTION_PATH)
-                .document(loggedUserEmail)
-                .collection(Constants.TRAINING_LIST_COLLECTION_PATH)
+        trainingListCollection
                 .orderBy(Constants.TRAINING_TIMESTAMP)
                 .get()
                 .addOnCompleteListener(task -> {
-                    loginProgressDialog.dismiss();
+                    progressDialog.dismiss();
                     trainingListTextView.setVisibility(View.GONE);
                     if (task.isSuccessful() && task.getResult() != null) {
                         successfullyGetTrainingListFromFirebase(loggedUserEmail, task.getResult());
                     } else if (task.getException() instanceof FirebaseNetworkException) {
-                        trainingListTextView.setVisibility(View.VISIBLE);
+                        Utils.createErrorDialog(getString(R.string.error_connection_fail),
+                                getString(R.string.alert_dialog_positive_message_ok), this
+                        );
                     } else {
-                        trainingListTextView.setText(getString(R.string.generic_error_try_again));
-                        trainingListTextView.setVisibility(View.VISIBLE);
+                        Utils.createErrorDialog(getString(R.string.generic_error_try_again),
+                                getString(R.string.alert_dialog_positive_message_ok), this
+                        );
                     }
                 });
     }
@@ -122,7 +138,7 @@ public class TrainingListActivity extends AppCompatActivity {
                 trainingResponseList.add(trainingResponse);
             }
         } else {
-            trainingListTextView.setText(getString(R.string.training_list_empty));
+            trainingListTextView.setText(getString(R.string.training_list_empty_message));
             trainingListTextView.setVisibility(View.VISIBLE);
         }
         setupRecyclerView(trainingResponseList, loggedUserEmail);
@@ -133,44 +149,59 @@ public class TrainingListActivity extends AppCompatActivity {
         TrainingListAdapter trainingListAdapter = new TrainingListAdapter(
                 trainingResponseList,
                 this,
-                training -> Utils.createAlertDialogWithQuestion(
-                        getString(R.string.training_list_delete_question_training),
-                        this,
-                        (dialog, which) -> deleteTraining(loggedUserEmail, training)
-                ), trainingDocumentId -> {
-            Intent intent = new Intent(TrainingListActivity.this, EditTrainingActivity.class);
-            intent.putExtra(Constants.TRAINING_DOCUMENT_ID, trainingDocumentId);
-            intent.putExtra(Constants.LOGGED_USER_EMAIL, loggedUserEmail);
-            startActivity(intent);
-        }, (trainingNumberId, trainingDocumentId) -> {
+                setupDeleteTrainingClickListener(loggedUserEmail),
+                setupEditTrainingClickListener(loggedUserEmail),
+                setupItemTrainingClickListener(loggedUserEmail)
+        );
+        setupAdapter(trainingListAdapter);
+    }
+
+    @NotNull
+    private OnTrainingItemClickListener setupItemTrainingClickListener(String loggedUserEmail) {
+        return (trainingNumberId,
+                trainingDocumentId) -> {
             Intent intent = new Intent(TrainingListActivity.this, ExerciseListActivity.class);
             intent.putExtra(Constants.TRAINING_NUMBER_ID, trainingNumberId);
             intent.putExtra(Constants.TRAINING_DOCUMENT_ID, trainingDocumentId);
             intent.putExtra(Constants.LOGGED_USER_EMAIL, loggedUserEmail);
             startActivity(intent);
-        }
+        };
+    }
+
+    @NotNull
+    private OnTrainingEditClickListener setupEditTrainingClickListener(String loggedUserEmail) {
+        return trainingDocumentId -> {
+            Intent intent = new Intent(TrainingListActivity.this, EditTrainingActivity.class);
+            intent.putExtra(Constants.TRAINING_DOCUMENT_ID, trainingDocumentId);
+            intent.putExtra(Constants.LOGGED_USER_EMAIL, loggedUserEmail);
+            startActivity(intent);
+        };
+    }
+
+    @NotNull
+    private OnTrainingDeleteClickListener setupDeleteTrainingClickListener(String loggedUserEmail) {
+        return training -> Utils.createAlertDialogWithQuestion(
+                getString(R.string.training_list_delete_question_training),
+                this,
+                (dialog, which) -> deleteTraining(loggedUserEmail, training)
         );
-        setupAdapter(trainingListAdapter);
     }
 
     private void deleteTraining(String loggedUserEmail, TrainingResponse trainingResponse) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(Constants.USERS_COLLECTION_PATH)
-                .document(loggedUserEmail)
-                .collection(Constants.TRAINING_LIST_COLLECTION_PATH)
+        trainingListCollection
                 .document(trainingResponse.getDocumentId())
                 .delete()
                 .addOnSuccessListener(
                         unused -> {
                             Toast.makeText(
-                                    TrainingListActivity.this,
+                                    getApplicationContext(),
                                     getString(R.string.training_list_successfully_deleted_training),
                                     Toast.LENGTH_LONG
                             ).show();
                             getTrainingListFromFirebase(loggedUserEmail);
                         })
                 .addOnFailureListener(e -> Utils.createErrorDialog(getString(R.string.training_list_error_deleted_training),
-                        getString(R.string.login_alert_dialog_positive_message_ok), this
+                        getString(R.string.alert_dialog_positive_message_ok), this
                 ));
     }
 
@@ -189,13 +220,5 @@ public class TrainingListActivity extends AppCompatActivity {
         trainingListButton = findViewById(R.id.trainingListButton);
         trainingListToolBar = findViewById(R.id.trainingListToolBar);
         trainingListTextView = findViewById(R.id.trainingListTextView);
-    }
-
-    private void showProgressDialog() {
-        loginProgressDialog = new ProgressDialog(this);
-        loginProgressDialog.show();
-        loginProgressDialog.setContentView(R.layout.progress_dialog);
-        loginProgressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        loginProgressDialog.setCancelable(false);
     }
 }

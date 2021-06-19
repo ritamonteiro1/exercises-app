@@ -36,7 +36,7 @@ public class ExerciseListActivity extends AppCompatActivity {
     private Toolbar exerciseListToolBar;
     private RecyclerView exerciseListRecyclerView;
     private Button exerciseListButton;
-    private ProgressDialog loginProgressDialog;
+    private ProgressDialog progressDialog;
     private TextView exerciseListTextView, exerciseListIdNumberTextView,
             exerciseListIdTitleTextView, exerciseListEmptyTextView;
     private String loggedUserEmail, trainingNumberId, trainingDocumentId;
@@ -52,7 +52,7 @@ public class ExerciseListActivity extends AppCompatActivity {
         trainingDocumentId = retrieverTrainingDocumentIdFromTrainingListActivity();
         setupExerciseListToolBar();
         setupExerciseListButton(loggedUserEmail, trainingDocumentId);
-        loginProgressDialog = Utils.showProgressDialog(this);
+        progressDialog = Utils.showProgressDialog(this);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class ExerciseListActivity extends AppCompatActivity {
                 .collection(Constants.EXERCISE_LIST_FIELD_TRAINING_LIST)
                 .get()
                 .addOnCompleteListener(task -> {
-                    loginProgressDialog.dismiss();
+                    progressDialog.dismiss();
                     exerciseListEmptyTextView.setVisibility(View.GONE);
                     if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
                         exerciseListIdNumberTextView.setText(trainingNumberId);

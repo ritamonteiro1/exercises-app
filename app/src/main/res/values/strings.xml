@@ -10,7 +10,8 @@
     <string name="login_error_fill_the_field">Preencha o campo</string>
     <string name="login_error_incorrect_email">Preencha o campo no formato de E-mail. Ex: abc@abc.com.br</string>
     <string name="login_error_unauthenticated_user">Usuário não autenticado</string>
-    <string name="login_alert_dialog_positive_message_ok">OK</string>
+    <!-- Generic Dialog Message-->
+    <string name="alert_dialog_positive_message_ok">OK</string>
     <!-- Generic errors -->
     <string name="error_connection_fail">Falha na conexão com a internet</string>
     <string name="generic_error_try_again">Ocorreu um erro. Tente novamente mais tarde</string>
@@ -19,7 +20,7 @@
     <string name="training_list_error_deleted_training">Error ao apagar treino. Tente novamente</string>
     <string name="training_list_successfully_deleted_training">Treino apagado</string>
     <string name="training_list_delete_question_training">Deseja mesmo apagar este treino?</string>
-    <string name="training_list_empty">A lista de treinos está vazia. Clique no botão abaixo para criar</string>
+    <string name="training_list_empty_message">A lista de treinos está vazia. Clique no botão abaixo para criar</string>
     <!-- NewTrainingActivity -->
     <string name="new_training_tool_bar_title">Criar novo treino</string>
     <string name="new_training_message_cancel_create_alert_dialog">Deseja mesmo cancelar a criação do treino?</string>

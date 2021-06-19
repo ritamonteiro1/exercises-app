@@ -15,6 +15,7 @@ import com.example.leal.constants.Constants;
 import com.example.leal.domains.TrainingResponse;
 import com.example.leal.utils.Utils;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Date;
@@ -24,19 +25,28 @@ public class NewTrainingActivity extends AppCompatActivity {
     private Toolbar newTrainingToolBar;
     private EditText newTrainingEditTextMultiLine;
     private Button newTrainingCancelButton, newTrainingSaveButton;
+    private CollectionReference trainingListCollection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_training);
         findViewsById();
-        String loggedUserEmail = retrieverLoggedUserEmailFromTrainingListActivity();
+        String loggedUserEmail = retrieverLoggedUserEmail();
         setupNewTrainingToolBar();
+        setupTrainingListCollection(loggedUserEmail);
         setupNewTrainingCancelButton();
-        setupNewTrainingSaveButton(loggedUserEmail);
+        setupNewTrainingSaveButton();
     }
 
-    private String retrieverLoggedUserEmailFromTrainingListActivity() {
+    private void setupTrainingListCollection(String loggedUserEmail) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        trainingListCollection =
+                db.collection(Constants.USERS_COLLECTION_PATH).
+                        document(loggedUserEmail).collection(Constants.TRAINING_LIST_COLLECTION_PATH);
+    }
+
+    private String retrieverLoggedUserEmail() {
         return getIntent().getStringExtra(Constants.LOGGED_USER_EMAIL);
     }
 
@@ -65,38 +75,41 @@ public class NewTrainingActivity extends AppCompatActivity {
         ));
     }
 
-    private void setupNewTrainingSaveButton(String loggedUserEmail) {
+    private void setupNewTrainingSaveButton() {
         newTrainingSaveButton.setOnClickListener(v -> {
             String trainingDescription = newTrainingEditTextMultiLine.getText().toString();
             if (trainingDescription.isEmpty()) {
                 Toast.makeText(
-                        NewTrainingActivity.this,
+                        getApplicationContext(),
                         getString(R.string.new_training_error_fill_the_field),
                         Toast.LENGTH_LONG
                 ).show();
             } else {
-                Long id = System.currentTimeMillis();
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                TrainingResponse trainingResponse = new TrainingResponse(id, trainingDescription,
-                        new Timestamp(new Date())
-                );
-                db.collection(Constants.USERS_COLLECTION_PATH)
-                        .document(loggedUserEmail)
-                        .collection(Constants.TRAINING_LIST_COLLECTION_PATH)
-                        .add(trainingResponse)
-                        .addOnSuccessListener(documentReference -> Toast.makeText(
-                                getApplicationContext(),
-                                getString(R.string.new_training_successfully_create_training),
-                                Toast.LENGTH_LONG
-                        ).show())
-                        .addOnFailureListener(e -> Toast.makeText(
-                                this,
-                                getString(R.string.generic_error_try_again),
-                                Toast.LENGTH_LONG
-                        ).show());
-                finish();
+                createNewTraining(trainingDescription);
             }
         });
+    }
+
+    private void createNewTraining(String trainingDescription) {
+        Long id = System.currentTimeMillis();
+        TrainingResponse trainingResponse = new TrainingResponse(id, trainingDescription,
+                new Timestamp(new Date())
+        );
+        trainingListCollection
+                .add(trainingResponse)
+                .addOnSuccessListener(documentReference -> {
+                    Toast.makeText(
+                            getApplicationContext(),
+                            getString(R.string.new_training_successfully_create_training),
+                            Toast.LENGTH_LONG
+                    ).show();
+                    finish();
+                })
+                .addOnFailureListener(e ->
+                        Utils.createErrorDialog(getString(R.string.generic_error_try_again),
+                                getString(R.string.alert_dialog_positive_message_ok), this
+                        )
+                );
     }
 
     private void findViewsById() {

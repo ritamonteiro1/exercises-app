@@ -26,7 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextInputLayout loginEmailTextInputLayout, loginPasswordTextInputLayout;
     private Button loginButton;
     private FirebaseAuth firebaseAuth;
-    private ProgressDialog loginProgressDialog;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
                     loginEmailEditText.getText().toString(),
                     loginPasswordEditText.getText().toString()
             );
-            showProgressDialog();
+            progressDialog = Utils.showProgressDialog(this);
             checkRegisteredUser(userRequest);
         });
     }
@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
     private void checkRegisteredUser(UserRequest userRequest) {
         firebaseAuth.signInWithEmailAndPassword(userRequest.getEmail(), userRequest.getPassword()).
                 addOnCompleteListener(this, task -> {
-                    loginProgressDialog.dismiss();
+                    progressDialog.dismiss();
                     if (task.isSuccessful()) {
                         moveToTrainingActivity(userRequest.getEmail());
                     } else if (task.getException() instanceof FirebaseAuthInvalidUserException) {
@@ -66,22 +66,14 @@ public class LoginActivity extends AppCompatActivity {
                         loginPasswordTextInputLayout.setError(Constants.BLANK_SPACE);
                     } else if (task.getException() instanceof FirebaseNetworkException) {
                         Utils.createErrorDialog(getString(R.string.error_connection_fail),
-                                getString(R.string.login_alert_dialog_positive_message_ok), this
+                                getString(R.string.alert_dialog_positive_message_ok), this
                         );
                     } else {
                         Utils.createErrorDialog(getString(R.string.generic_error_try_again),
-                                getString(R.string.login_alert_dialog_positive_message_ok), this
+                                getString(R.string.alert_dialog_positive_message_ok), this
                         );
                     }
                 });
-    }
-
-    private void showProgressDialog() {
-        loginProgressDialog = new ProgressDialog(this);
-        loginProgressDialog.show();
-        loginProgressDialog.setContentView(R.layout.progress_dialog);
-        loginProgressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        loginProgressDialog.setCancelable(false);
     }
 
     private void moveToTrainingActivity(String loggedUserEmail) {
