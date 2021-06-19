@@ -1,4 +1,4 @@
-package com.example.leal.activity;
+package com.example.leal.activity.training;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -78,12 +78,14 @@ public class NewTrainingActivity extends AppCompatActivity {
                 Long id = System.currentTimeMillis();
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 TrainingResponse trainingResponse = new TrainingResponse(id, trainingDescription,
-                        new Timestamp(new Date()));
+                        new Timestamp(new Date())
+                );
                 db.collection(Constants.USERS_COLLECTION_PATH)
                         .document(loggedUserEmail)
                         .collection(Constants.TRAINING_LIST_COLLECTION_PATH)
                         .add(trainingResponse)
-                        .addOnSuccessListener(documentReference -> Toast.makeText(this,
+                        .addOnSuccessListener(documentReference -> Toast.makeText(
+                                getApplicationContext(),
                                 getString(R.string.new_training_successfully_create_training),
                                 Toast.LENGTH_LONG
                         ).show())

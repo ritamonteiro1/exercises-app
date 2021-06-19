@@ -1,6 +1,7 @@
 package com.example.leal.utils;
 
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.widget.EditText;
@@ -47,12 +48,12 @@ public class Utils {
         }
     }
 
-    public static void createErrorDialog(String message, String alertDialogText, Context context) {
+    public static void createErrorDialog(String message, String positiveButtonText, Context context) {
         AlertDialog.Builder builder =
                 new AlertDialog.Builder(context);
         builder.setMessage(message)
                 .setCancelable(false)
-                .setPositiveButton((alertDialogText), null);
+                .setPositiveButton((positiveButtonText), null);
         AlertDialog alert = builder.create();
         alert.show();
     }
@@ -72,8 +73,17 @@ public class Utils {
         alert.show();
     }
 
+    public static ProgressDialog showProgressDialog(Context context) {
+        ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.show();
+        progressDialog.setContentView(R.layout.progress_dialog);
+        progressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        progressDialog.setCancelable(false);
+        return progressDialog;
+    }
+
     public static String convertTimestampToString(Timestamp timestamp) {
-        Date date = new Date(timestamp.toDate().getTime());
+        Date date = timestamp.toDate();
         DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_FORMAT, Constants.LOCALE_BR);
         return dateFormat.format(date);
     }

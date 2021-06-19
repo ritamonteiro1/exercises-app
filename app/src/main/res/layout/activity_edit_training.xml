@@ -5,7 +5,7 @@
     android:id="@+id/editTrainingActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.EditTrainingActivity">
+    tools:context=".activity.training.EditTrainingActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/editTrainingToolBar"

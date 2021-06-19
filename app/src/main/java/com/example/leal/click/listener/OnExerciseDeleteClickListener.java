@@ -1,7 +1,7 @@
 package com.example.leal.click.listener;
 
-import com.example.leal.domains.ExerciseRequest;
+import com.example.leal.domains.exercise.Exercise;
 
 public interface OnExerciseDeleteClickListener {
-    void onClick(ExerciseRequest exerciseRequest);
+    void onClick(Exercise exercise);
 }

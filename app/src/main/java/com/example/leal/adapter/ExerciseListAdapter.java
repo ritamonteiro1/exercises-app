@@ -15,24 +15,23 @@ import com.bumptech.glide.Glide;
 import com.example.leal.R;
 import com.example.leal.click.listener.OnExerciseDeleteClickListener;
 import com.example.leal.click.listener.OnExerciseEditClickListener;
-import com.example.leal.constants.Constants;
-import com.example.leal.domains.ExerciseRequest;
-import com.example.leal.domains.ExerciseType;
+import com.example.leal.domains.exercise.Exercise;
+import com.example.leal.domains.exercise.ExerciseType;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapter.ExerciseListViewHolder> {
-    private final List<ExerciseRequest> exerciseRequestList;
+    private final List<Exercise> exerciseList;
     private final Context context;
     private final OnExerciseDeleteClickListener onDeleteClickListener;
     private final OnExerciseEditClickListener onEditClickListener;
 
-    public ExerciseListAdapter(List<ExerciseRequest> exerciseRequestList, Context context,
+    public ExerciseListAdapter(List<Exercise> exerciseList, Context context,
                                OnExerciseDeleteClickListener onDeleteClickListener,
                                OnExerciseEditClickListener onEditClickListener) {
-        this.exerciseRequestList = exerciseRequestList;
+        this.exerciseList = exerciseList;
         this.context = context;
         this.onDeleteClickListener = onDeleteClickListener;
         this.onEditClickListener = onEditClickListener;
@@ -51,14 +50,14 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
     @Override
     public void onBindViewHolder(@NonNull @org.jetbrains.annotations.NotNull ExerciseListAdapter.ExerciseListViewHolder holder, int position) {
         holder.bind(
-                exerciseRequestList.get(position), context, onDeleteClickListener,
+                exerciseList.get(position), context, onDeleteClickListener,
                 onEditClickListener
         );
     }
 
     @Override
     public int getItemCount() {
-        return exerciseRequestList.size();
+        return exerciseList.size();
     }
 
     public static class ExerciseListViewHolder extends RecyclerView.ViewHolder {
@@ -81,19 +80,17 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
             itemExerciseTypeTextView = itemView.findViewById(R.id.itemExerciseTypeTextView);
         }
 
-        public void bind(ExerciseRequest exerciseRequest, Context context,
+        public void bind(Exercise exercise, Context context,
                          OnExerciseDeleteClickListener onDeleteClickListener,
                          OnExerciseEditClickListener onEditClickListener) {
-            itemExerciseEditImageButton.setOnClickListener(v -> onEditClickListener.onClick(exerciseRequest.getDocumentId()));
-            itemExerciseDeleteImageButton.setOnClickListener(v -> onDeleteClickListener.onClick(exerciseRequest));
-            itemExerciseDescriptionTextView.setText(exerciseRequest.getObservation());
-            itemExerciseIdTextView.setText(String.valueOf(exerciseRequest.getId()));
-            itemExerciseTypeTextView.setText(ExerciseType.toStringExerciseType(exerciseRequest.getType()));
-            if (exerciseRequest.getType().getDescription().equals(ExerciseType.AEROBIC.getDescription())) {
-                Glide.with(context).load(Constants.AEROBIC_PHOTO_URL_FROM_STORAGE).into(itemExerciseImageView);
-            } else {
-                Glide.with(context).load(Constants.BODYBUILDING_PHOTO_URL_FROM_STORAGE).into(itemExerciseImageView);
-            }
+            itemExerciseEditImageButton.setOnClickListener(v -> onEditClickListener.onClick(exercise.getDocumentId()));
+            itemExerciseDeleteImageButton.setOnClickListener(v -> onDeleteClickListener.onClick(exercise));
+            itemExerciseDescriptionTextView.setText(exercise.getObservation());
+            itemExerciseIdTextView.setText(String.valueOf(exercise.getId()));
+            itemExerciseTypeTextView.setText(exercise.getExerciseType().getType());
+
+            ExerciseType exerciseType = exercise.getExerciseType();
+            Glide.with(context).load(exerciseType.getUrlImage()).into(itemExerciseImageView);
         }
     }
 }

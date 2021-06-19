@@ -90,8 +90,9 @@ public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListAdapte
             itemTrainingDeleteImageButton.setOnClickListener(v -> onDeleteClickListener.onClick(trainingResponse));
             itemTrainingEditImageButton.setOnClickListener(v -> onEditClickListener.onClick(trainingResponse.getDocumentId()));
             itemView.setOnClickListener(v -> onItemClickListener.onClick((String.valueOf(trainingResponse.getId())), trainingResponse.getDocumentId()));
-            // itemTrainingDateFormatTextView.setText(Utils.convertTimestampToString
-            // (trainingResponse.getDate()));
+            itemTrainingDateFormatTextView.setText(
+                    Utils.convertTimestampToString(trainingResponse.getDate())
+            );
         }
     }
 }

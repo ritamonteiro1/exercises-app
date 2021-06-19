@@ -18,10 +18,4 @@ public class Constants {
     public static final String TRAINING_TIMESTAMP = "date";
     public static final String DATE_FORMAT = "dd/MM/yyyy";
     public static final Locale LOCALE_BR = new Locale("pt", "BR");
-    public static final String AEROBIC_PHOTO_URL_FROM_STORAGE = "https://firebasestorage" +
-            ".googleapis.com/v0/b/leal-app-firebase.appspot.com/o/images%2Faerobic" +
-            ".jpg?alt=media&token=6a0cfda4-64a6-4879-8cd9-e7dc58c44019";
-    public static final String BODYBUILDING_PHOTO_URL_FROM_STORAGE = "https://firebasestorage" +
-            ".googleapis.com/v0/b/leal-app-firebase.appspot.com/o/images%2Fbodybuilding" +
-            ".jpg?alt=media&token=1c2edfed-3b68-4164-af20-afc4de5a2895";
 }

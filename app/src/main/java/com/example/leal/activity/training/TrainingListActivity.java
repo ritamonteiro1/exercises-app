@@ -1,4 +1,4 @@
-package com.example.leal.activity;
+package com.example.leal.activity.training;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.leal.R;
+import com.example.leal.activity.exercise.ExerciseListActivity;
 import com.example.leal.adapter.TrainingListAdapter;
 import com.example.leal.constants.Constants;
 import com.example.leal.domains.TrainingResponse;
@@ -26,6 +27,7 @@ import com.example.leal.utils.Utils;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 import java.util.ArrayList;
@@ -97,11 +99,9 @@ public class TrainingListActivity extends AppCompatActivity {
                 .get()
                 .addOnCompleteListener(task -> {
                     loginProgressDialog.dismiss();
+                    trainingListTextView.setVisibility(View.GONE);
                     if (task.isSuccessful() && task.getResult() != null) {
-                        successfullyGetTrainingListFromFirebase(loggedUserEmail, task);
-//                    } else if (task.getResult().isEmpty()){
-//                        trainingListTextView.setText(getString(R.string.training_list_empty));
-//                        trainingListTextView.setVisibility(View.VISIBLE);
+                        successfullyGetTrainingListFromFirebase(loggedUserEmail, task.getResult());
                     } else if (task.getException() instanceof FirebaseNetworkException) {
                         trainingListTextView.setVisibility(View.VISIBLE);
                     } else {
@@ -112,19 +112,24 @@ public class TrainingListActivity extends AppCompatActivity {
     }
 
     private void successfullyGetTrainingListFromFirebase(String loggedUserEmail,
-                                                         com.google.android.gms.tasks.Task<com.google.firebase.firestore.QuerySnapshot> task) {
+                                                         QuerySnapshot result) {
         trainingListRecyclerView.setVisibility(View.VISIBLE);
         ArrayList<TrainingResponse> trainingResponseList = new ArrayList<>();
-        if (task.getResult() != null)
-            for (QueryDocumentSnapshot document : task.getResult()) {
+        if (result != null && !result.isEmpty()) {
+            for (QueryDocumentSnapshot document : result) {
                 TrainingResponse trainingResponse = document.toObject(TrainingResponse.class);
                 trainingResponse.setDocumentId(document.getId());
                 trainingResponseList.add(trainingResponse);
             }
+        } else {
+            trainingListTextView.setText(getString(R.string.training_list_empty));
+            trainingListTextView.setVisibility(View.VISIBLE);
+        }
         setupRecyclerView(trainingResponseList, loggedUserEmail);
     }
 
-    private void setupRecyclerView(List<TrainingResponse> trainingResponseList, String loggedUserEmail) {
+    private void setupRecyclerView(List<TrainingResponse> trainingResponseList,
+                                   String loggedUserEmail) {
         TrainingListAdapter trainingListAdapter = new TrainingListAdapter(
                 trainingResponseList,
                 this,
@@ -142,7 +147,8 @@ public class TrainingListActivity extends AppCompatActivity {
             intent.putExtra(Constants.TRAINING_NUMBER_ID, trainingNumberId);
             intent.putExtra(Constants.TRAINING_DOCUMENT_ID, trainingDocumentId);
             intent.putExtra(Constants.LOGGED_USER_EMAIL, loggedUserEmail);
-            startActivity(intent); }
+            startActivity(intent);
+        }
         );
         setupAdapter(trainingListAdapter);
     }
@@ -163,11 +169,9 @@ public class TrainingListActivity extends AppCompatActivity {
                             ).show();
                             getTrainingListFromFirebase(loggedUserEmail);
                         })
-                .addOnFailureListener(e -> Toast.makeText(
-                        TrainingListActivity.this,
-                        getString(R.string.training_list_error_deleted_training),
-                        Toast.LENGTH_LONG
-                ).show());
+                .addOnFailureListener(e -> Utils.createErrorDialog(getString(R.string.training_list_error_deleted_training),
+                        getString(R.string.login_alert_dialog_positive_message_ok), this
+                ));
     }
 
     private void setupAdapter(TrainingListAdapter trainingListAdapter) {

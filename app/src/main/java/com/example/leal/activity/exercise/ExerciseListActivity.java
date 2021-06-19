@@ -1,4 +1,4 @@
-package com.example.leal.activity;
+package com.example.leal.activity.exercise;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,9 +20,9 @@ import android.widget.Toast;
 import com.example.leal.R;
 import com.example.leal.adapter.ExerciseListAdapter;
 import com.example.leal.constants.Constants;
-import com.example.leal.domains.ExerciseRequest;
-import com.example.leal.domains.ExerciseResponse;
-import com.example.leal.domains.ExerciseType;
+import com.example.leal.domains.exercise.Exercise;
+import com.example.leal.domains.exercise.ExerciseResponse;
+import com.example.leal.domains.exercise.ExerciseType;
 import com.example.leal.utils.Utils;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -52,7 +52,7 @@ public class ExerciseListActivity extends AppCompatActivity {
         trainingDocumentId = retrieverTrainingDocumentIdFromTrainingListActivity();
         setupExerciseListToolBar();
         setupExerciseListButton(loggedUserEmail, trainingDocumentId);
-        showProgressDialog();
+        loginProgressDialog = Utils.showProgressDialog(this);
     }
 
     @Override
@@ -76,31 +76,32 @@ public class ExerciseListActivity extends AppCompatActivity {
                 .get()
                 .addOnCompleteListener(task -> {
                     loginProgressDialog.dismiss();
-                    if (task.isSuccessful() && task.getResult() != null) {
+                    exerciseListEmptyTextView.setVisibility(View.GONE);
+                    if (task.isSuccessful() && task.getResult() != null && !task.getResult().isEmpty()) {
                         exerciseListIdNumberTextView.setText(trainingNumberId);
                         exerciseListIdNumberTextView.setVisibility(View.VISIBLE);
                         exerciseListIdTitleTextView.setVisibility(View.VISIBLE);
                         exerciseListRecyclerView.setVisibility(View.VISIBLE);
                         exerciseListDivisionView.setVisibility(View.VISIBLE);
-                        ExerciseRequest exerciseRequest;
-                        ArrayList<ExerciseRequest> exerciseRequestList = new ArrayList<>();
+                        Exercise exercise;
+                        ArrayList<Exercise> exerciseList = new ArrayList<>();
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             ExerciseResponse exerciseResponse =
                                     document.toObject(ExerciseResponse.class);
                             exerciseResponse.setDocumentId(document.getId());
-                            exerciseRequest = new ExerciseRequest(
+                            exercise = new Exercise(
                                     exerciseResponse.getId(),
                                     exerciseResponse.getObservation(),
                                     ExerciseType.toExerciseType(exerciseResponse.getType()),
                                     exerciseResponse.getDocumentId(),
                                     exerciseResponse.getUrlImage()
                             );
-                            exerciseRequestList.add(exerciseRequest);
+                            exerciseList.add(exercise);
                         }
-                        setupRecyclerView(exerciseRequestList, loggedUserEmail, trainingDocumentId);
-//                    } else if (task.getResult().isEmpty()) {
-//                        exerciseListEmptyTextView.setVisibility(View.VISIBLE);
-                    }else if (task.getException() instanceof FirebaseNetworkException) {
+                        setupRecyclerView(exerciseList, loggedUserEmail, trainingDocumentId);
+                    } else if (task.isSuccessful() && task.getResult() != null && task.getResult().isEmpty()) {
+                        exerciseListEmptyTextView.setVisibility(View.VISIBLE);
+                    } else if (task.getException() instanceof FirebaseNetworkException) {
                         exerciseListTextView.setVisibility(View.VISIBLE);
                     } else {
                         exerciseListTextView.setText(getString(R.string.generic_error_try_again));
@@ -109,11 +110,11 @@ public class ExerciseListActivity extends AppCompatActivity {
                 });
     }
 
-    private void setupRecyclerView(ArrayList<ExerciseRequest> exerciseRequestList, String loggedUserEmail,
+    private void setupRecyclerView(ArrayList<Exercise> exerciseList, String loggedUserEmail,
                                    String trainingDocumentId) {
-        ExerciseListAdapter exerciseListAdapter = new ExerciseListAdapter(exerciseRequestList, this,
-                exerciseRequest -> Utils.createAlertDialogWithQuestion(getString(R.string.exercise_list_delete_question_exercise),
-                        this, (dialog, which) -> deleteExercise(loggedUserEmail, exerciseRequest,
+        ExerciseListAdapter exerciseListAdapter = new ExerciseListAdapter(exerciseList, this,
+                exercise -> Utils.createAlertDialogWithQuestion(getString(R.string.exercise_list_delete_question_exercise),
+                        this, (dialog, which) -> deleteExercise(loggedUserEmail, exercise,
                                 trainingDocumentId
                         )
                 ), exerciseDocumentId -> {
@@ -137,7 +138,7 @@ public class ExerciseListActivity extends AppCompatActivity {
         exerciseListRecyclerView.setLayoutManager(layoutManager);
     }
 
-    private void deleteExercise(String loggedUserEmail, ExerciseRequest exerciseRequest,
+    private void deleteExercise(String loggedUserEmail, Exercise exercise,
                                 String trainingDocumentId) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection(Constants.USERS_COLLECTION_PATH)
@@ -145,28 +146,25 @@ public class ExerciseListActivity extends AppCompatActivity {
                 .collection(Constants.TRAINING_LIST_COLLECTION_PATH)
                 .document(trainingDocumentId)
                 .collection(Constants.EXERCISE_LIST_FIELD_TRAINING_LIST)
-                .document(exerciseRequest.getDocumentId())
+                .document(exercise.getDocumentId())
                 .delete()
-                .addOnSuccessListener(unused -> Toast.makeText(
-                        ExerciseListActivity.this,
-                        getString(R.string.exercise_list_successful_deleted_exercise),
-                        Toast.LENGTH_LONG
-                ).show())
-                .addOnFailureListener(e -> Toast.makeText(ExerciseListActivity.this,
-                        getString(R.string.generic_error_try_again), Toast.LENGTH_LONG
-                ).show());
+                .addOnSuccessListener(unused -> {
+                            Toast.makeText(
+                                    getApplicationContext(),
+                                    getString(R.string.exercise_list_successful_deleted_exercise),
+                                    Toast.LENGTH_LONG
+                            ).show();
+                            getExerciseListFromFirebase(loggedUserEmail, trainingNumberId,
+                                    trainingDocumentId
+                            );
+                        }
+                ).addOnFailureListener(e -> Toast.makeText(ExerciseListActivity.this,
+                getString(R.string.generic_error_try_again), Toast.LENGTH_LONG
+        ).show());
     }
 
     private String retrieverLoggedUserEmailFromTrainingListActivity() {
         return getIntent().getStringExtra(Constants.LOGGED_USER_EMAIL);
-    }
-
-    private void showProgressDialog() {
-        loginProgressDialog = new ProgressDialog(this);
-        loginProgressDialog.show();
-        loginProgressDialog.setContentView(R.layout.progress_dialog);
-        loginProgressDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        loginProgressDialog.setCancelable(false);
     }
 
     private String retrieverTrainingNumberIdFromTrainingListActivity() {
@@ -183,7 +181,10 @@ public class ExerciseListActivity extends AppCompatActivity {
     }
 
     private void setupExerciseListButton(String loggedUserEmail, String trainingDocumentId) {
-        exerciseListButton.setOnClickListener(v -> moveToNewExerciseActivity(loggedUserEmail, trainingDocumentId));
+        exerciseListButton.setOnClickListener(v -> moveToNewExerciseActivity(
+                loggedUserEmail,
+                trainingDocumentId
+        ));
     }
 
     private void moveToNewExerciseActivity(String loggedUserEmail, String trainingDocumentId) {

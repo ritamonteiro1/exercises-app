@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.leal.R;
+import com.example.leal.activity.training.TrainingListActivity;
 import com.example.leal.constants.Constants;
 import com.example.leal.domains.UserRequest;
 import com.example.leal.utils.Utils;

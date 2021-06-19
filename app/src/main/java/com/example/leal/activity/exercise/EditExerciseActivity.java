@@ -1,4 +1,4 @@
-package com.example.leal.activity;
+package com.example.leal.activity.exercise;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;

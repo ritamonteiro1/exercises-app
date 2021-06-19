@@ -1,4 +1,4 @@
-package com.example.leal.domains;
+package com.example.leal.domains.exercise;
 
 public class ExerciseResponse {
     private Long id;

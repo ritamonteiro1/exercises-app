@@ -5,9 +5,8 @@
     android:id="@+id/newExerciseConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="@color/white"
     android:theme="@style/AppTheme.Toolbar"
-    tools:context=".activity.NewExerciseActivity">
+    tools:context=".activity.exercise.NewExerciseActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/newExerciseToolBar"
@@ -21,30 +20,41 @@
         app:layout_constraintTop_toTopOf="parent"
         app:navigationIcon="@drawable/ic_arrow_back" />
 
-    <Spinner
-        android:id="@+id/newExerciseSpinner"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/newExerciseCardView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="6dp"
+        app:cardBackgroundColor="@color/grey_neutral"
         android:layout_marginEnd="20dp"
-        android:background="@color/white"
-        android:gravity="center"
-        android:padding="10dp"
-        android:prompt="@string/exercise_type"
+        app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newExerciseSelectCategoryTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/newExerciseSelectCategoryTextView" >
+        <Spinner
+            android:id="@+id/newExerciseSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:prompt="@string/spinner_prompt"
+            android:spinnerMode="dialog"
+            android:textAlignment="center"
+            android:theme="@style/ThemeOverlay.AppCompat.Light" />
+    </androidx.cardview.widget.CardView>
 
     <ImageView
         android:id="@+id/newExerciseImageView"
-        android:layout_width="140dp"
+        android:layout_width="0dp"
         android:layout_height="140dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="24dp"
+        android:layout_marginEnd="20dp"
         android:contentDescription="@string/content_description_image_new_exercise"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/newExerciseSpinner"
+        app:layout_constraintTop_toBottomOf="@+id/newExerciseCardView"
         tools:src="@tools:sample/avatars" />
 
     <EditText
