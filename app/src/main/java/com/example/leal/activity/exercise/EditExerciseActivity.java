@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.example.leal.R;
 import com.example.leal.constants.Constants;
 import com.example.leal.utils.Utils;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
@@ -20,25 +21,36 @@ public class EditExerciseActivity extends AppCompatActivity {
     private Toolbar editExerciseToolBar;
     private EditText editExerciseEditTextMultiLine;
     private Button editExerciseCancelButton, editExerciseSaveButton;
+    private CollectionReference exerciseListCollection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_exercise);
         findViewsById();
-        String loggedEmailUser = retrieverLoggedUserEmailFromExerciseListActivity();
-        String exerciseDocumentId = retrieverExerciseDocumentIdFromExerciseListActivity();
-        String trainingDocumentId = retrieverTrainingDocumentIdFromExerciseListActivity();
+        String loggedUserEmail = retrieverLoggedUserEmail();
+        String exerciseDocumentId = retrieverExerciseDocumentId();
+        String trainingDocumentId = retrieverTrainingDocumentId();
         setupEditExerciseToolBar();
-        setupSaveButton(loggedEmailUser, exerciseDocumentId, trainingDocumentId);
+        setupSaveButton(exerciseDocumentId);
         setupCancelButton();
+        setupExerciseListCollection(loggedUserEmail, trainingDocumentId);
     }
 
-    private String retrieverTrainingDocumentIdFromExerciseListActivity() {
+    private void setupExerciseListCollection(String loggedUserEmail, String trainingDocumentId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        exerciseListCollection = db.collection(Constants.USERS_COLLECTION_PATH)
+                .document(loggedUserEmail)
+                .collection(Constants.TRAINING_LIST_COLLECTION_PATH)
+                .document(trainingDocumentId)
+                .collection(Constants.EXERCISE_LIST_FIELD_TRAINING_LIST);
+    }
+
+    private String retrieverTrainingDocumentId() {
         return getIntent().getStringExtra(Constants.TRAINING_DOCUMENT_ID);
     }
 
-    private String retrieverExerciseDocumentIdFromExerciseListActivity() {
+    private String retrieverExerciseDocumentId() {
         return getIntent().getStringExtra(Constants.EXERCISE_DOCUMENT_ID);
     }
 
@@ -48,36 +60,15 @@ public class EditExerciseActivity extends AppCompatActivity {
         ));
     }
 
-    private void setupSaveButton(String loggedUserEmail, String exerciseDocumentId,
-                                 String trainingDocumentId) {
+    private void setupSaveButton(String exerciseDocumentId) {
         editExerciseSaveButton.setOnClickListener(v -> {
             String editedObservationExercise = editExerciseEditTextMultiLine.getText().toString();
             if (!editedObservationExercise.isEmpty()) {
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                db.collection(Constants.USERS_COLLECTION_PATH)
-                        .document(loggedUserEmail)
-                        .collection(Constants.TRAINING_LIST_COLLECTION_PATH)
-                        .document(trainingDocumentId)
-                        .collection(Constants.EXERCISE_LIST_COLLECTION_PATH)
-                        .document(exerciseDocumentId)
-                        .update(
-                                Constants.OBSERVATION_FIELD_EXERCISE_LIST,
-                                editedObservationExercise
-                        )
-                        .addOnSuccessListener(unused -> Toast.makeText(
-                                EditExerciseActivity.this,
-                                getString(R.string.edit_exercise_successfull_change_description_training),
-                                Toast.LENGTH_LONG
-                        ).show())
-                        .addOnFailureListener(e -> Toast.makeText(
-                                EditExerciseActivity.this,
-                                getString(R.string.generic_error_try_again),
-                                Toast.LENGTH_LONG
-                        ).show());
-                finish();
+                editExercise(exerciseDocumentId, editedObservationExercise);
+
             } else {
                 Toast.makeText(
-                        EditExerciseActivity.this,
+                        getApplicationContext(),
                         getString(R.string.edit_exercise_error_fill_the_field),
                         Toast.LENGTH_LONG
                 ).show();
@@ -85,7 +76,29 @@ public class EditExerciseActivity extends AppCompatActivity {
         });
     }
 
-    private String retrieverLoggedUserEmailFromExerciseListActivity() {
+    private void editExercise(String exerciseDocumentId, String editedObservationExercise) {
+        exerciseListCollection
+                .document(exerciseDocumentId)
+                .update(
+                        Constants.OBSERVATION_FIELD_EXERCISE_LIST,
+                        editedObservationExercise
+                )
+                .addOnSuccessListener(unused -> {
+                    Toast.makeText(
+                            getApplicationContext(),
+                            getString(R.string.edit_exercise_successfull_change_description_training),
+                            Toast.LENGTH_LONG
+                    ).show();
+                    finish();
+                })
+                .addOnFailureListener(e -> Utils.createErrorDialog(
+                        getString(R.string.generic_error_try_again),
+                        getString(R.string.alert_dialog_positive_message_ok),
+                        this
+                ));
+    }
+
+    private String retrieverLoggedUserEmail() {
         return getIntent().getStringExtra(Constants.LOGGED_USER_EMAIL);
     }
 
