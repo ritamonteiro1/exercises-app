@@ -17,7 +17,7 @@
         <activity android:name=".activity.training.NewTrainingActivity" />
         <activity android:name=".activity.exercise.ExerciseListActivity" />
         <activity android:name=".activity.training.TrainingListActivity"/>
-        <activity android:name=".activity.LoginActivity">
+        <activity android:name=".activity.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

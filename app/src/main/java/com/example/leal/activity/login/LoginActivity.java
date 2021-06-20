@@ -1,4 +1,4 @@
-package com.example.leal.activity;
+package com.example.leal.activity.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,7 +11,7 @@ import android.widget.EditText;
 import com.example.leal.R;
 import com.example.leal.activity.training.TrainingListActivity;
 import com.example.leal.constants.Constants;
-import com.example.leal.domains.UserRequest;
+import com.example.leal.domains.user.UserRequest;
 import com.example.leal.utils.Utils;
 
 

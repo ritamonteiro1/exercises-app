@@ -1,4 +1,4 @@
-package com.example.leal.click.listener;
+package com.example.leal.click.listener.exercise.click.listener;
 
 import com.example.leal.domains.exercise.Exercise;
 

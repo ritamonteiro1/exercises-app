@@ -21,6 +21,7 @@ import com.example.leal.constants.Constants;
 import com.example.leal.domains.exercise.ExerciseRequest;
 import com.example.leal.domains.exercise.ExerciseType;
 import com.example.leal.utils.Utils;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class NewExerciseActivity extends AppCompatActivity implements AdapterVie
     private Button newExerciseCancelButton, newExerciseSaveButton;
     private Spinner newExerciseSpinner;
     private ExerciseType selectedExerciseType;
+    private CollectionReference exerciseListCollection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +46,17 @@ public class NewExerciseActivity extends AppCompatActivity implements AdapterVie
         String trainingDocumentId = retrieverTrainingDocumentId();
         setupNewExerciseToolBar();
         setupNewExerciseCancelButton();
-        setupNewExerciseSaveButton(loggedUserEmail, trainingDocumentId);
+        setupExerciseListCollection(loggedUserEmail, trainingDocumentId);
+        setupNewExerciseSaveButton();
+    }
+
+    private void setupExerciseListCollection(String loggedUserEmail, String trainingDocumentId) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        exerciseListCollection = db.collection(Constants.USERS_COLLECTION_PATH)
+                .document(loggedUserEmail)
+                .collection(Constants.TRAINING_LIST_COLLECTION_PATH)
+                .document(trainingDocumentId)
+                .collection(Constants.EXERCISE_LIST_FIELD_TRAINING_LIST);
     }
 
     private void setupSpinner() {
@@ -84,11 +96,11 @@ public class NewExerciseActivity extends AppCompatActivity implements AdapterVie
         ));
     }
 
-    private void setupNewExerciseSaveButton(String loggedUserEmail, String trainingDocumentId) {
+    private void setupNewExerciseSaveButton() {
         newExerciseSaveButton.setOnClickListener(v -> {
             String exerciseObservation = newExerciseEditTextMultiLine.getText().toString();
             if (!exerciseObservation.isEmpty()) {
-                createNewExercise(exerciseObservation, loggedUserEmail, trainingDocumentId);
+                createNewExercise(exerciseObservation);
             } else {
                 Toast.makeText(
                         NewExerciseActivity.this,
@@ -99,8 +111,7 @@ public class NewExerciseActivity extends AppCompatActivity implements AdapterVie
         });
     }
 
-    private void createNewExercise(String exerciseObservation, String loggedUserEmail,
-                                   String trainingDocumentId) {
+    private void createNewExercise(String exerciseObservation) {
         Long id = System.currentTimeMillis();
         ExerciseRequest exerciseRequest = new ExerciseRequest(
                 id,
@@ -108,23 +119,21 @@ public class NewExerciseActivity extends AppCompatActivity implements AdapterVie
                 selectedExerciseType.getType(),
                 selectedExerciseType.getUrlImage()
         );
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.collection(Constants.USERS_COLLECTION_PATH)
-                .document(loggedUserEmail)
-                .collection(Constants.TRAINING_LIST_COLLECTION_PATH)
-                .document(trainingDocumentId)
-                .collection(Constants.EXERCISE_LIST_COLLECTION_PATH)
+        exerciseListCollection
                 .add(exerciseRequest)
-                .addOnSuccessListener(documentReference -> Toast.makeText(
-                        this,
-                        getString(R.string.new_exercise_successfully_create_training),
-                        Toast.LENGTH_LONG
-                ).show())
-                .addOnFailureListener(e -> Toast.makeText(
-                        this,
+                .addOnSuccessListener(documentReference -> {
+                    Toast.makeText(
+                            this,
+                            getString(R.string.new_exercise_successfully_create_training),
+                            Toast.LENGTH_LONG
+                    ).show();
+                    finish();
+                })
+                .addOnFailureListener(e -> Utils.createErrorDialog(
                         getString(R.string.generic_error_try_again),
-                        Toast.LENGTH_LONG
-                ).show());
+                        getString(R.string.alert_dialog_positive_message_ok),
+                        this
+                ));
     }
 
     private void setupNewExerciseToolBar() {

@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.example.leal.R;
 import com.example.leal.constants.Constants;
-import com.example.leal.domains.TrainingResponse;
+import com.example.leal.domains.training.TrainingResponse;
 import com.example.leal.utils.Utils;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;

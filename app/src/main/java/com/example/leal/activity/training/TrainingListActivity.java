@@ -20,11 +20,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.leal.R;
 import com.example.leal.activity.exercise.ExerciseListActivity;
 import com.example.leal.adapter.TrainingListAdapter;
-import com.example.leal.click.listener.OnTrainingDeleteClickListener;
-import com.example.leal.click.listener.OnTrainingEditClickListener;
-import com.example.leal.click.listener.OnTrainingItemClickListener;
+import com.example.leal.click.listener.training.click.listener.OnTrainingDeleteClickListener;
+import com.example.leal.click.listener.training.click.listener.OnTrainingEditClickListener;
+import com.example.leal.click.listener.training.click.listener.OnTrainingItemClickListener;
 import com.example.leal.constants.Constants;
-import com.example.leal.domains.TrainingResponse;
+import com.example.leal.domains.training.TrainingResponse;
 import com.example.leal.utils.Utils;
 
 import com.google.firebase.FirebaseNetworkException;

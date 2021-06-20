@@ -19,8 +19,8 @@ import android.widget.Toast;
 
 import com.example.leal.R;
 import com.example.leal.adapter.ExerciseListAdapter;
-import com.example.leal.click.listener.OnExerciseDeleteClickListener;
-import com.example.leal.click.listener.OnExerciseEditClickListener;
+import com.example.leal.click.listener.exercise.click.listener.OnExerciseDeleteClickListener;
+import com.example.leal.click.listener.exercise.click.listener.OnExerciseEditClickListener;
 import com.example.leal.constants.Constants;
 import com.example.leal.domains.exercise.Exercise;
 import com.example.leal.domains.exercise.ExerciseResponse;

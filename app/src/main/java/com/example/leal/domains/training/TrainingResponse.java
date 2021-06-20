@@ -1,4 +1,4 @@
-package com.example.leal.domains;
+package com.example.leal.domains.training;
 
 
 import com.google.firebase.Timestamp;
