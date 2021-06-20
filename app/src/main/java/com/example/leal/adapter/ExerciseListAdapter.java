@@ -88,7 +88,6 @@ public class ExerciseListAdapter extends RecyclerView.Adapter<ExerciseListAdapte
             itemExerciseDescriptionTextView.setText(exercise.getObservation());
             itemExerciseIdTextView.setText(String.valueOf(exercise.getId()));
             itemExerciseTypeTextView.setText(exercise.getExerciseType().getType());
-
             ExerciseType exerciseType = exercise.getExerciseType();
             Glide.with(context).load(exerciseType.getUrlImage()).into(itemExerciseImageView);
         }

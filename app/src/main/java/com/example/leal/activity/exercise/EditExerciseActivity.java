@@ -43,7 +43,7 @@ public class EditExerciseActivity extends AppCompatActivity {
                 .document(loggedUserEmail)
                 .collection(Constants.TRAINING_LIST_COLLECTION_PATH)
                 .document(trainingDocumentId)
-                .collection(Constants.EXERCISE_LIST_FIELD_TRAINING_LIST);
+                .collection(Constants.EXERCISE_LIST_COLLECTION_PATH);
     }
 
     private String retrieverTrainingDocumentId() {
@@ -65,7 +65,6 @@ public class EditExerciseActivity extends AppCompatActivity {
             String editedObservationExercise = editExerciseEditTextMultiLine.getText().toString();
             if (!editedObservationExercise.isEmpty()) {
                 editExercise(exerciseDocumentId, editedObservationExercise);
-
             } else {
                 Toast.makeText(
                         getApplicationContext(),

@@ -11,8 +11,6 @@ import androidx.appcompat.app.AlertDialog;
 import com.example.leal.R;
 import com.example.leal.constants.Constants;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.Timestamp;
-
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -82,8 +80,7 @@ public class Utils {
         return progressDialog;
     }
 
-    public static String convertTimestampToString(Timestamp timestamp) {
-        Date date = timestamp.toDate();
+    public static String convertDateToString(Date date) {
         DateFormat dateFormat = new SimpleDateFormat(Constants.DATE_FORMAT, Constants.LOCALE_BR);
         return dateFormat.format(date);
     }

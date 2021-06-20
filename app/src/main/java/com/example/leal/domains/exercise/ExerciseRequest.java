@@ -1,8 +1,6 @@
 package com.example.leal.domains.exercise;
 
-import java.io.Serializable;
-
-public class ExerciseRequest implements Serializable {
+public class ExerciseRequest {
     private final Long id;
     private final String urlImage;
     private final String observation;

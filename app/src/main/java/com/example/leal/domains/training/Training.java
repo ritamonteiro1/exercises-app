@@ -1,28 +1,19 @@
 package com.example.leal.domains.training;
 
-import com.google.firebase.Timestamp;
-
 import java.io.Serializable;
+import java.util.Date;
 
 public class Training implements Serializable {
-    private String documentId;
-    private Long id;
-    private String description;
-    private Timestamp date;
+    private final String documentId;
+    private final Long id;
+    private final String description;
+    private final Date date;
 
-    public Training(Long id, String description, Timestamp date, String documentId) {
+    public Training(Long id, String description, Date date, String documentId) {
         this.documentId = documentId;
         this.id = id;
         this.description = description;
         this.date = date;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setDocumentId(String documentId) {
-        this.documentId = documentId;
     }
 
     public Long getId() {
@@ -33,7 +24,7 @@ public class Training implements Serializable {
         return description;
     }
 
-    public Timestamp getDate() {
+    public Date getDate() {
         return date;
     }
 

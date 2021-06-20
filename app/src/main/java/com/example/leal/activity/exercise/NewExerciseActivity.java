@@ -56,7 +56,7 @@ public class NewExerciseActivity extends AppCompatActivity implements AdapterVie
                 .document(loggedUserEmail)
                 .collection(Constants.TRAINING_LIST_COLLECTION_PATH)
                 .document(trainingDocumentId)
-                .collection(Constants.EXERCISE_LIST_FIELD_TRAINING_LIST);
+                .collection(Constants.EXERCISE_LIST_COLLECTION_PATH);
     }
 
     private void setupSpinner() {

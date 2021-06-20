@@ -1,6 +1,5 @@
 package com.example.leal.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,17 +22,15 @@ import java.util.List;
 
 public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListAdapter.TrainingListViewHolder> {
     private final List<Training> trainingList;
-    private final Context context;
     private final OnTrainingDeleteClickListener onDeleteClickListener;
     private final OnTrainingEditClickListener onEditClickListener;
     private final OnTrainingItemClickListener onItemClickListener;
 
-    public TrainingListAdapter(List<Training> trainingList, Context context,
+    public TrainingListAdapter(List<Training> trainingList,
                                OnTrainingDeleteClickListener onDeleteClickListener,
                                OnTrainingEditClickListener onEditClickListener,
                                OnTrainingItemClickListener onItemClickListener) {
         this.trainingList = trainingList;
-        this.context = context;
         this.onDeleteClickListener = onDeleteClickListener;
         this.onEditClickListener = onEditClickListener;
         this.onItemClickListener = onItemClickListener;
@@ -52,7 +49,7 @@ public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListAdapte
     public void onBindViewHolder(@NotNull TrainingListAdapter.TrainingListViewHolder holder,
                                  int position) {
         holder.bind(
-                trainingList.get(position), context, onDeleteClickListener,
+                trainingList.get(position), onDeleteClickListener,
                 onEditClickListener, onItemClickListener
         );
     }
@@ -81,7 +78,7 @@ public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListAdapte
                     itemView.findViewById(R.id.itemTrainingDateFormatTextView);
         }
 
-        public void bind(Training training, Context context,
+        public void bind(Training training,
                          OnTrainingDeleteClickListener onDeleteClickListener,
                          OnTrainingEditClickListener onEditClickListener,
                          OnTrainingItemClickListener onItemClickListener) {
@@ -91,7 +88,7 @@ public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListAdapte
             itemTrainingEditImageButton.setOnClickListener(v -> onEditClickListener.onClick(training.getDocumentId()));
             itemView.setOnClickListener(v -> onItemClickListener.onClick((String.valueOf(training.getId())), training.getDocumentId()));
             itemTrainingDateFormatTextView.setText(
-                    Utils.convertTimestampToString(training.getDate())
+                    Utils.convertDateToString(training.getDate())
             );
         }
     }

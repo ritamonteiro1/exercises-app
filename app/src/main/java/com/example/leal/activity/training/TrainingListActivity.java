@@ -137,7 +137,9 @@ public class TrainingListActivity extends AppCompatActivity {
                 TrainingResponse trainingResponse = document.toObject(TrainingResponse.class);
                 trainingResponse.setDocumentId(document.getId());
                 Training training = new Training(trainingResponse.getId(),
-                        trainingResponse.getDescription(), trainingResponse.getDate(), trainingResponse.getDocumentId());
+                        trainingResponse.getDescription(), trainingResponse.getDate().toDate(),
+                        trainingResponse.getDocumentId()
+                );
                 trainingList.add(training);
             }
         } else {
@@ -151,7 +153,6 @@ public class TrainingListActivity extends AppCompatActivity {
                                    String loggedUserEmail) {
         TrainingListAdapter trainingListAdapter = new TrainingListAdapter(
                 trainingList,
-                this,
                 setupDeleteTrainingClickListener(loggedUserEmail),
                 setupEditTrainingClickListener(loggedUserEmail),
                 setupItemTrainingClickListener(loggedUserEmail)
