@@ -24,6 +24,7 @@ import com.example.leal.click.listener.training.click.listener.OnTrainingDeleteC
 import com.example.leal.click.listener.training.click.listener.OnTrainingEditClickListener;
 import com.example.leal.click.listener.training.click.listener.OnTrainingItemClickListener;
 import com.example.leal.constants.Constants;
+import com.example.leal.domains.training.Training;
 import com.example.leal.domains.training.TrainingResponse;
 import com.example.leal.utils.Utils;
 
@@ -130,24 +131,26 @@ public class TrainingListActivity extends AppCompatActivity {
     private void successfullyGetTrainingListFromFirebase(String loggedUserEmail,
                                                          QuerySnapshot result) {
         trainingListRecyclerView.setVisibility(View.VISIBLE);
-        ArrayList<TrainingResponse> trainingResponseList = new ArrayList<>();
+        ArrayList<Training> trainingList = new ArrayList<>();
         if (result != null && !result.isEmpty()) {
             for (QueryDocumentSnapshot document : result) {
                 TrainingResponse trainingResponse = document.toObject(TrainingResponse.class);
                 trainingResponse.setDocumentId(document.getId());
-                trainingResponseList.add(trainingResponse);
+                Training training = new Training(trainingResponse.getId(),
+                        trainingResponse.getDescription(), trainingResponse.getDate(), trainingResponse.getDocumentId());
+                trainingList.add(training);
             }
         } else {
             trainingListTextView.setText(getString(R.string.training_list_empty_message));
             trainingListTextView.setVisibility(View.VISIBLE);
         }
-        setupRecyclerView(trainingResponseList, loggedUserEmail);
+        setupRecyclerView(trainingList, loggedUserEmail);
     }
 
-    private void setupRecyclerView(List<TrainingResponse> trainingResponseList,
+    private void setupRecyclerView(List<Training> trainingList,
                                    String loggedUserEmail) {
         TrainingListAdapter trainingListAdapter = new TrainingListAdapter(
-                trainingResponseList,
+                trainingList,
                 this,
                 setupDeleteTrainingClickListener(loggedUserEmail),
                 setupEditTrainingClickListener(loggedUserEmail),
@@ -187,9 +190,9 @@ public class TrainingListActivity extends AppCompatActivity {
         );
     }
 
-    private void deleteTraining(String loggedUserEmail, TrainingResponse trainingResponse) {
+    private void deleteTraining(String loggedUserEmail, Training training) {
         trainingListCollection
-                .document(trainingResponse.getDocumentId())
+                .document(training.getDocumentId())
                 .delete()
                 .addOnSuccessListener(
                         unused -> {

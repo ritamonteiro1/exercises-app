@@ -14,7 +14,7 @@ import com.example.leal.R;
 import com.example.leal.click.listener.training.click.listener.OnTrainingDeleteClickListener;
 import com.example.leal.click.listener.training.click.listener.OnTrainingEditClickListener;
 import com.example.leal.click.listener.training.click.listener.OnTrainingItemClickListener;
-import com.example.leal.domains.training.TrainingResponse;
+import com.example.leal.domains.training.Training;
 import com.example.leal.utils.Utils;
 
 import org.jetbrains.annotations.NotNull;
@@ -22,17 +22,17 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListAdapter.TrainingListViewHolder> {
-    private final List<TrainingResponse> trainingResponseList;
+    private final List<Training> trainingList;
     private final Context context;
     private final OnTrainingDeleteClickListener onDeleteClickListener;
     private final OnTrainingEditClickListener onEditClickListener;
     private final OnTrainingItemClickListener onItemClickListener;
 
-    public TrainingListAdapter(List<TrainingResponse> trainingResponseList, Context context,
+    public TrainingListAdapter(List<Training> trainingList, Context context,
                                OnTrainingDeleteClickListener onDeleteClickListener,
                                OnTrainingEditClickListener onEditClickListener,
                                OnTrainingItemClickListener onItemClickListener) {
-        this.trainingResponseList = trainingResponseList;
+        this.trainingList = trainingList;
         this.context = context;
         this.onDeleteClickListener = onDeleteClickListener;
         this.onEditClickListener = onEditClickListener;
@@ -52,14 +52,14 @@ public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListAdapte
     public void onBindViewHolder(@NotNull TrainingListAdapter.TrainingListViewHolder holder,
                                  int position) {
         holder.bind(
-                trainingResponseList.get(position), context, onDeleteClickListener,
+                trainingList.get(position), context, onDeleteClickListener,
                 onEditClickListener, onItemClickListener
         );
     }
 
     @Override
     public int getItemCount() {
-        return trainingResponseList.size();
+        return trainingList.size();
     }
 
     public static class TrainingListViewHolder extends RecyclerView.ViewHolder {
@@ -81,17 +81,17 @@ public class TrainingListAdapter extends RecyclerView.Adapter<TrainingListAdapte
                     itemView.findViewById(R.id.itemTrainingDateFormatTextView);
         }
 
-        public void bind(TrainingResponse trainingResponse, Context context,
+        public void bind(Training training, Context context,
                          OnTrainingDeleteClickListener onDeleteClickListener,
                          OnTrainingEditClickListener onEditClickListener,
                          OnTrainingItemClickListener onItemClickListener) {
-            itemTrainingIdTextView.setText(String.valueOf(trainingResponse.getId()));
-            itemTrainingDescriptionTextView.setText(trainingResponse.getDescription());
-            itemTrainingDeleteImageButton.setOnClickListener(v -> onDeleteClickListener.onClick(trainingResponse));
-            itemTrainingEditImageButton.setOnClickListener(v -> onEditClickListener.onClick(trainingResponse.getDocumentId()));
-            itemView.setOnClickListener(v -> onItemClickListener.onClick((String.valueOf(trainingResponse.getId())), trainingResponse.getDocumentId()));
+            itemTrainingIdTextView.setText(String.valueOf(training.getId()));
+            itemTrainingDescriptionTextView.setText(training.getDescription());
+            itemTrainingDeleteImageButton.setOnClickListener(v -> onDeleteClickListener.onClick(training));
+            itemTrainingEditImageButton.setOnClickListener(v -> onEditClickListener.onClick(training.getDocumentId()));
+            itemView.setOnClickListener(v -> onItemClickListener.onClick((String.valueOf(training.getId())), training.getDocumentId()));
             itemTrainingDateFormatTextView.setText(
-                    Utils.convertTimestampToString(trainingResponse.getDate())
+                    Utils.convertTimestampToString(training.getDate())
             );
         }
     }

@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.example.leal.R;
 import com.example.leal.constants.Constants;
-import com.example.leal.domains.training.TrainingResponse;
+import com.example.leal.domains.training.TrainingRequest;
 import com.example.leal.utils.Utils;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
@@ -92,11 +92,11 @@ public class NewTrainingActivity extends AppCompatActivity {
 
     private void createNewTraining(String trainingDescription) {
         Long id = System.currentTimeMillis();
-        TrainingResponse trainingResponse = new TrainingResponse(id, trainingDescription,
+        TrainingRequest trainingRequest = new TrainingRequest(id, trainingDescription,
                 new Timestamp(new Date())
         );
         trainingListCollection
-                .add(trainingResponse)
+                .add(trainingRequest)
                 .addOnSuccessListener(documentReference -> {
                     Toast.makeText(
                             getApplicationContext(),
