@@ -27,13 +27,11 @@ import com.example.leal.constants.Constants;
 import com.example.leal.domains.training.Training;
 import com.example.leal.domains.training.TrainingResponse;
 import com.example.leal.utils.Utils;
-
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
 
 import org.jetbrains.annotations.NotNull;
 
@@ -192,11 +190,13 @@ public class TrainingListActivity extends AppCompatActivity {
     }
 
     private void deleteTraining(String loggedUserEmail, Training training) {
+        progressDialog = Utils.showProgressDialog(this);
         trainingListCollection
                 .document(training.getDocumentId())
                 .delete()
                 .addOnSuccessListener(
                         unused -> {
+                            progressDialog.dismiss();
                             Toast.makeText(
                                     getApplicationContext(),
                                     getString(R.string.training_list_successfully_deleted_training),
@@ -204,9 +204,18 @@ public class TrainingListActivity extends AppCompatActivity {
                             ).show();
                             getTrainingListFromFirebase(loggedUserEmail);
                         })
-                .addOnFailureListener(e -> Utils.createErrorDialog(getString(R.string.training_list_error_deleted_training),
-                        getString(R.string.alert_dialog_positive_message_ok), this
-                ));
+                .addOnFailureListener(e -> {
+                    progressDialog.dismiss();
+                    if (e instanceof FirebaseNetworkException) {
+                        Utils.createErrorDialog(getString(R.string.error_connection_fail),
+                                getString(R.string.alert_dialog_positive_message_ok), this
+                        );
+                    } else {
+                        Utils.createErrorDialog(getString(R.string.training_list_error_deleted_training),
+                                getString(R.string.alert_dialog_positive_message_ok), this
+                        );
+                    }
+                });
     }
 
     private void setupAdapter(TrainingListAdapter trainingListAdapter) {

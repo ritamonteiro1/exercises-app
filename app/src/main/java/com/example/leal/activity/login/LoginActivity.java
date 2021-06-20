@@ -18,6 +18,7 @@ import com.example.leal.utils.Utils;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 
 
@@ -61,9 +62,10 @@ public class LoginActivity extends AppCompatActivity {
                     progressDialog.dismiss();
                     if (task.isSuccessful()) {
                         moveToTrainingActivity(userRequest.getEmail());
-                    } else if (task.getException() instanceof FirebaseAuthInvalidUserException) {
-                        loginEmailTextInputLayout.setError(getString(R.string.login_error_unauthenticated_user));
-                        loginPasswordTextInputLayout.setError(Constants.BLANK_SPACE);
+                    } else if (task.getException() instanceof FirebaseAuthInvalidUserException ||
+                            task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                        loginEmailTextInputLayout.setError(Constants.BLANK_SPACE);
+                        loginPasswordTextInputLayout.setError(getString(R.string.login_error_unauthenticated_user));
                     } else if (task.getException() instanceof FirebaseNetworkException) {
                         Utils.createErrorDialog(getString(R.string.error_connection_fail),
                                 getString(R.string.alert_dialog_positive_message_ok), this

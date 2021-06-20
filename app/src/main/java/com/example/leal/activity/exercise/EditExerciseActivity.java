@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import com.example.leal.R;
 import com.example.leal.constants.Constants;
 import com.example.leal.utils.Utils;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -22,6 +24,7 @@ public class EditExerciseActivity extends AppCompatActivity {
     private EditText editExerciseEditTextMultiLine;
     private Button editExerciseCancelButton, editExerciseSaveButton;
     private CollectionReference exerciseListCollection;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +79,7 @@ public class EditExerciseActivity extends AppCompatActivity {
     }
 
     private void editExercise(String exerciseDocumentId, String editedObservationExercise) {
+        progressDialog = Utils.showProgressDialog(this);
         exerciseListCollection
                 .document(exerciseDocumentId)
                 .update(
@@ -83,6 +87,7 @@ public class EditExerciseActivity extends AppCompatActivity {
                         editedObservationExercise
                 )
                 .addOnSuccessListener(unused -> {
+                    progressDialog.dismiss();
                     Toast.makeText(
                             getApplicationContext(),
                             getString(R.string.edit_exercise_successfull_change_description_training),
@@ -90,11 +95,22 @@ public class EditExerciseActivity extends AppCompatActivity {
                     ).show();
                     finish();
                 })
-                .addOnFailureListener(e -> Utils.createErrorDialog(
-                        getString(R.string.generic_error_try_again),
-                        getString(R.string.alert_dialog_positive_message_ok),
-                        this
-                ));
+                .addOnFailureListener(e -> {
+                    progressDialog.dismiss();
+                    if (e instanceof FirebaseNetworkException) {
+                        Utils.createErrorDialog(
+                                getString(R.string.error_connection_fail),
+                                getString(R.string.alert_dialog_positive_message_ok),
+                                this
+                        );
+                    } else {
+                        Utils.createErrorDialog(
+                                getString(R.string.generic_error_try_again),
+                                getString(R.string.alert_dialog_positive_message_ok),
+                                this
+                        );
+                    }
+                });
     }
 
     private String retrieverLoggedUserEmail() {

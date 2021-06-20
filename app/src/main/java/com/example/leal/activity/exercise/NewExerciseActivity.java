@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.example.leal.constants.Constants;
 import com.example.leal.domains.exercise.ExerciseRequest;
 import com.example.leal.domains.exercise.ExerciseType;
 import com.example.leal.utils.Utils;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -35,6 +37,7 @@ public class NewExerciseActivity extends AppCompatActivity implements AdapterVie
     private Spinner newExerciseSpinner;
     private ExerciseType selectedExerciseType;
     private CollectionReference exerciseListCollection;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +115,7 @@ public class NewExerciseActivity extends AppCompatActivity implements AdapterVie
     }
 
     private void createNewExercise(String exerciseObservation) {
+        progressDialog = Utils.showProgressDialog(this);
         Long id = System.currentTimeMillis();
         ExerciseRequest exerciseRequest = new ExerciseRequest(
                 id,
@@ -122,6 +126,7 @@ public class NewExerciseActivity extends AppCompatActivity implements AdapterVie
         exerciseListCollection
                 .add(exerciseRequest)
                 .addOnSuccessListener(documentReference -> {
+                    progressDialog.dismiss();
                     Toast.makeText(
                             this,
                             getString(R.string.new_exercise_successfully_create_training),
@@ -129,11 +134,22 @@ public class NewExerciseActivity extends AppCompatActivity implements AdapterVie
                     ).show();
                     finish();
                 })
-                .addOnFailureListener(e -> Utils.createErrorDialog(
-                        getString(R.string.generic_error_try_again),
-                        getString(R.string.alert_dialog_positive_message_ok),
-                        this
-                ));
+                .addOnFailureListener(e -> {
+                    progressDialog.dismiss();
+                    if (e instanceof FirebaseNetworkException) {
+                        Utils.createErrorDialog(
+                                getString(R.string.error_connection_fail),
+                                getString(R.string.alert_dialog_positive_message_ok),
+                                this
+                        );
+                    } else {
+                        Utils.createErrorDialog(
+                                getString(R.string.generic_error_try_again),
+                                getString(R.string.alert_dialog_positive_message_ok),
+                                this
+                        );
+                    }
+                });
     }
 
     private void setupNewExerciseToolBar() {

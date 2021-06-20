@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -14,6 +15,7 @@ import com.example.leal.R;
 import com.example.leal.constants.Constants;
 import com.example.leal.domains.training.TrainingRequest;
 import com.example.leal.utils.Utils;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -26,6 +28,7 @@ public class NewTrainingActivity extends AppCompatActivity {
     private EditText newTrainingEditTextMultiLine;
     private Button newTrainingCancelButton, newTrainingSaveButton;
     private CollectionReference trainingListCollection;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +94,7 @@ public class NewTrainingActivity extends AppCompatActivity {
     }
 
     private void createNewTraining(String trainingDescription) {
+        progressDialog = Utils.showProgressDialog(this);
         Long id = System.currentTimeMillis();
         TrainingRequest trainingRequest = new TrainingRequest(id, trainingDescription,
                 new Timestamp(new Date())
@@ -98,6 +102,7 @@ public class NewTrainingActivity extends AppCompatActivity {
         trainingListCollection
                 .add(trainingRequest)
                 .addOnSuccessListener(documentReference -> {
+                    progressDialog.dismiss();
                     Toast.makeText(
                             getApplicationContext(),
                             getString(R.string.new_training_successfully_create_training),
@@ -105,10 +110,18 @@ public class NewTrainingActivity extends AppCompatActivity {
                     ).show();
                     finish();
                 })
-                .addOnFailureListener(e ->
-                        Utils.createErrorDialog(getString(R.string.generic_error_try_again),
-                                getString(R.string.alert_dialog_positive_message_ok), this
-                        )
+                .addOnFailureListener(e -> {
+                            progressDialog.dismiss();
+                            if (e instanceof FirebaseNetworkException) {
+                                Utils.createErrorDialog(getString(R.string.error_connection_fail),
+                                        getString(R.string.alert_dialog_positive_message_ok), this
+                                );
+                            } else {
+                                Utils.createErrorDialog(getString(R.string.generic_error_try_again),
+                                        getString(R.string.alert_dialog_positive_message_ok), this
+                                );
+                            }
+                        }
                 );
     }
 
